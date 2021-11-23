@@ -1,4 +1,4 @@
 # SchnitzleBratwurst
-MEGA KRASSES WEBENG PROJEKT!!!11!!1!!1!!1
+MEGA KRASSES WEBENG I PROJEKT!!!11!!1!!1!!1
 
-definately not powered by Duale Hochschule
+definately not powered by Duale Hochschule Mannem
