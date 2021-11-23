@@ -1,7 +1,7 @@
 {
   "name": "schnitzelbratwurst",
   "version": "1.0.0",
-  "description": "Our definatly not sponsored by dh project",
+  "description": "Our definatly not sponsored by dhbw project",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
