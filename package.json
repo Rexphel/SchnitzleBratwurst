@@ -1,0 +1,24 @@
+{
+  "name": "schnitzelbratwurst",
+  "version": "1.0.0",
+  "description": "Our definatly not sponsored by dh project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rexphel/SchnitzleBratwurst.git"
+  },
+  "keywords": [
+    "geil",
+    "schnitzel",
+    "bratwurst"
+  ],
+  "author": "Jan-Luca Wolf, Colin Schubert, Philip Rexroth, Marvin Rock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rexphel/SchnitzleBratwurst/issues"
+  },
+  "homepage": "https://github.com/Rexphel/SchnitzleBratwurst#readme"
+}
