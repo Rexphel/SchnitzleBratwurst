@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Rexphel/SchnitzleBratwurst/issues"
   },
-  "homepage": "https://github.com/Rexphel/SchnitzleBratwurst#readme"
+  "homepage": "https://github.com/Rexphel/SchnitzleBratwurst#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
