@@ -8,6 +8,8 @@ const PREFIX = "/api";
 
 const DEBUG = true;
 
+app.use(express.json());
+
 app.get(`${PREFIX}`, (req, res) => {
   res.send("<h1>Hello, World from the api</h1>");
 });
@@ -54,7 +56,6 @@ app.post(`${PREFIX}/events`, async (req, res) => {
             res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
             return;
         }
-        console.log(req.body);1
         const query = req.body;
         if (!query || !query.title || !query.message || !query.date || !query.duration) {
             res.status(400).send("Not all parameters given! Unable to insert");
@@ -62,7 +63,6 @@ app.post(`${PREFIX}/events`, async (req, res) => {
         }
         const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
         const id = result.insertedId;
-        console.log(`ID: ${id}`)
         res.set("Location", `${PREFIX}/events/${id}`);
         res.status(201).end();
     } catch (err) {
@@ -91,6 +91,21 @@ app.put(`${PREFIX}/events`, async (req, res) => {
     }
 });
 
+app.get(`${PREFIX}/eventcount`, async (req, res) => {
+    try {
+        debug_req(req);
+        if (!mongo.isConnected()) {
+            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            return;
+        }
+        const result = await mongoManager.getEventCount(mongo.getCollection());
+        res.send({count: result});
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
 app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
   mongo.connect();
@@ -102,8 +117,13 @@ function debug(msg) {
 }
 
 function debug_req(req) {
-    if (DEBUG)
-        console.log(`${req.method} request on ${req.originalUrl}.${(req.body ? "Body: " + req.body : "")}`);
+    if (DEBUG) {
+        console.log(`${req.method} request on ${req.originalUrl}.`);
+        if (Object.keys(req.body) > 0) {
+            console.log("Body:");
+            console.dir(req.body);
+        }
+    }
 }
 
 /* Template To Copy

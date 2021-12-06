@@ -10,7 +10,6 @@ async function getElementById(collection, id) {
 }
 
 async function addEvent(collection, title, message, date, duration) {
-    console.log("Date: ", date);
     if (!helper.isDateValid(date)) {
         throw "Date is in an invalid format! Use HH:MM-DD.MM.YYYYx";
     }
@@ -25,6 +24,10 @@ async function addEvent(collection, title, message, date, duration) {
 
 async function deleteEvent(collection, id) {
     return await collection.deleteOne({_id: new ObjectId(id)});
+}
+
+async function getEventCount(collection) {
+    return (await getAllElements(collection)).length;
 }
 
 // async function getIdFromTitle(collection, title) {
@@ -47,4 +50,4 @@ async function updateEvent(collection, id, update) {
     }
 }
 
-module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById};
+module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById, getEventCount};
