@@ -2,7 +2,7 @@ import { software_version } from './App';
 import React from 'react';
 //import process from NodeJS
 
-const NODE_VERSION = process.versions.node
+const NODE_VERSION = process.version
 const EXPRESS_VERSION = "---"
 const REACT_VERSION = React.version
 const MONGODB_VERSION = "---"
