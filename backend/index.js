@@ -49,12 +49,12 @@ app.post(`${PREFIX}/events`, async (req, res) => {
         }
         console.log(req.query);
         const query = req.query;
-        // /api/events?title=TITLE&message=message&date=date
-        if (!query.title || !query.message || !query.date) {
+        // /api/events?title=TITLE&message=message&date=date&duration=duration
+        if (!query.title || !query.message || !query.date || !query.duration) {
             res.status(400).send("Not all parameters given!");
             return;
         }
-        const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date);
+        const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
         const id = result.insertedId;
         console.log(`ID: ${id}`)
         res.set("Location", `${PREFIX}/events/${id}`);

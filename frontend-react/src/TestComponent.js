@@ -1,5 +1,6 @@
-import Button from '@restart/ui/esm/Button';
+// import Button from '@restart/ui/esm/Button';
 import React from 'react';
+import { Button } from 'react-bootstrap'; 
 
 class MyComponent extends React.Component {
     constructor(props) {
