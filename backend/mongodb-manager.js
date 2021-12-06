@@ -30,10 +30,6 @@ async function getEventCount(collection) {
     return (await getAllElements(collection)).length;
 }
 
-// async function getIdFromTitle(collection, title) {
-//     // TODO
-// }
-
 // TODO Only update the given parameters
 async function updateEvent(collection, id, update) {
     if (update.title) {
