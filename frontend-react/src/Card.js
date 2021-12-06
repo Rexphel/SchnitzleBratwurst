@@ -9,7 +9,7 @@ class EventCard extends React.Component {
     }   
     render(){ //event_title="" event_duration="" event_date="" event_description=""
         return (
-            <Card border="primary" style={{ width: '20rem' }}>
+            <Card border="primary" style={{ width: '16rem' }}>
                 <Card.Header>{this.props.event_date} - Duration: {this.props.event_duration} </Card.Header>
                 <Card.Body>
                     <Card.Title>{this.props.event_title}</Card.Title>

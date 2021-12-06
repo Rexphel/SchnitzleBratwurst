@@ -2,9 +2,10 @@ import { useState } from "react";
 // eslint-disable-next-line
 import { Button, Modal, Form, Card } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import EventCard from './Card';
 import { popup_new_event, popup_delete_event } from './Popups'
+import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 
 export default function Content() {
 
@@ -21,10 +22,11 @@ export default function Content() {
 
     //Show x Event Cards
     for (var i=1;i<=num;i++) {
-        items.push(<EventCard event_title={"Event Nr. " + i}  event_description="Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiu" event_duration="XX.YY" event_date="TT.MM.JJJJ"/>);        
-       
+        items.push(<EventCard event_title={"Event Nr. " + i}  event_description="Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiu" event_duration="XX.YY" event_date="TT.MM.JJJJ"/> );        
+        items.push(" ")
     }
     return (
+        
         <div className="mt-5">
             {/*-----BUTTONS-----*/}
             <Button variant="primary" onClick={handleShow_new_event}>
@@ -37,7 +39,7 @@ export default function Content() {
 
 
 
-
+            {/*-----NEW EVENT POPUP-----*/}
             <Modal
                 show={show_new_event}
                 onHide={handleClose_new_event}
@@ -77,7 +79,7 @@ export default function Content() {
             </Modal>
 
 
-
+            {/*-----DELETE EVENT POPUP-----*/}
             <Modal
                 show={show_delete_event}
                 onHide={handleClose_delete_event}
@@ -91,7 +93,6 @@ export default function Content() {
                 <Modal.Body>
                     <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher löschen? </h4>
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button variant="success" onClick={handleClose_delete_event}>
                         Doch nich!
@@ -102,25 +103,17 @@ export default function Content() {
                 </Modal.Footer>
             </Modal>
         <hr />
-       
-        <Row>
-        {items}
-        {/* 
-        <Card border="primary" style={{ width: '18rem' }}>
-        <Card.Header>TT.DD.MMMM - XX Hour(s)</Card.Header>
-        <Card.Body>
-            <Card.Title>Titel</Card.Title>
-            <Card.Text>
-                Unfassbar wichtige Event Beschreibung!
-            </Card.Text>
-            <Button variant="primary">Bearbeiten</Button>
-            <Button variant="danger">Löschen</Button>
-        </Card.Body>
-        </Card> */}
-
-        </Row>
-
+           
+                <Row xs={1} sm={2} md={3} lg={3} xl={3} xxl={4}> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400*/}
+                    <Col>{items} </Col>  
+                    <Col>{items} </Col>
+                    <Col>{items} </Col>
+                    <Col>{items} </Col>
+                    
+                </Row>
+           
         </div>
+        
         
     
     );

@@ -7,7 +7,6 @@ import { BrowserRouter as Router,
     Route
 } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { version } from "react";
 
 const software_version = "2021.12.6.9"
 
