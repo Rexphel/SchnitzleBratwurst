@@ -1,34 +1,75 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // eslint-disable-next-line
-import { Button, Container} from "react-bootstrap";
-import MyComponent from './TestComponent';
+import { Button, Modal } from "react-bootstrap";
 
 export default function Content() {
-    const [isLoading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (isLoading) {
-            simulateNetworkRequest().then(() => {
-                setLoading(false);
-            });
-        }
-    }, [isLoading]);
+    const [show_new_event, setShow_new_event] = useState(false);
+    const [show_delete_event, setShow_delete_event] = useState(false);
 
-    const handleClick = () => setLoading(true);
+    const handleClose_new_event = () => setShow_new_event(false);
+    const handleShow_new_event = () => setShow_new_event(true);
+
 
     return (
         <div className="mt-5">
-            <Button variant="primary" disabled={isLoading} onClick={!isLoading ? handleClick : null}>
-                {isLoading ? "Creating Event..." : "Create Event"}
-            </Button>   
-            <Button variant="primary" disabled={isLoading} onClick={!isLoading ? handleClick : null}>
-                {isLoading ? "Deleting Event..." : "Delete Event"}
+
+            <Button variant="primary" onClick={handleShow}>
+                Neues Event
             </Button>
-            <MyComponent />
+            <Button variant="primary" onClick={handleShow}>
+                Event löschen
+            </Button>
+
+
+            <Modal
+                show={show_new_event}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header>
+                    <Modal.Title>Neues Event</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    I will not close if you click outside me. Don't even try to press
+                    escape key.
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Abbrechen
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Speichern
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal
+                show={show_delete_event}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header>
+                    <Modal.Title>Event löschen</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    Ganz ganz ganz sicher löschen?
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Doch nich!
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Jaaa!
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
-}
-
-function simulateNetworkRequest() {
-    return new Promise((resolve) => setTimeout(resolve, 2000));
 }
