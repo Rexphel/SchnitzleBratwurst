@@ -27,9 +27,9 @@ async function deleteEvent(collection, id) {
     return await collection.deleteOne({_id: new ObjectId(id)});
 }
 
-async function getIdFromTitle(collection, title) {
-    // TODO
-}
+// async function getIdFromTitle(collection, title) {
+//     // TODO
+// }
 
 // TODO Only update the given parameters
 async function updateEvent(collection, id, update) {
@@ -47,4 +47,4 @@ async function updateEvent(collection, id, update) {
     }
 }
 
-module.exports = {getAllElements, addEvent, deleteEvent, getIdFromTitle, updateEvent, getElementById};
+module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById};

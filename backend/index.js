@@ -6,17 +6,20 @@ const PORT = 8000;
 const app = express();
 const PREFIX = "/api";
 
+const DEBUG = true;
+
 app.get(`${PREFIX}`, (req, res) => {
   res.send("<h1>Hello, World from the api</h1>");
 });
 
 app.get(`${PREFIX}/events`, async (req, res) => {
     try {
+        // debug(`GET request on ${req.originalUrl}`);
+        debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
             return;
         }
-        console.log(req.query.name == null);
         const result = await mongoManager.getAllElements(mongo.getCollection());
         res.send(result);
     } catch (err) {
@@ -27,6 +30,8 @@ app.get(`${PREFIX}/events`, async (req, res) => {
 
 app.get(`${PREFIX}/events/:eventId`, async (req, res) => {
     try {
+        // debug(`GET request on ${req.originalUrl}`);
+        debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
             return;
@@ -43,15 +48,16 @@ app.get(`${PREFIX}/events/:eventId`, async (req, res) => {
 
 app.post(`${PREFIX}/events`, async (req, res) => {
     try {
+        // debug(`POST request on ${req.originalUrl}`);
+        debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
             return;
         }
-        console.log(req.query);
-        const query = req.query;
-        // /api/events?title=TITLE&message=message&date=date&duration=duration
-        if (!query.title || !query.message || !query.date || !query.duration) {
-            res.status(400).send("Not all parameters given!");
+        console.log(req.body);1
+        const query = req.body;
+        if (!query || !query.title || !query.message || !query.date || !query.duration) {
+            res.status(400).send("Not all parameters given! Unable to insert");
             return;
         }
         const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
@@ -65,7 +71,50 @@ app.post(`${PREFIX}/events`, async (req, res) => {
     }
 });
 
+app.put(`${PREFIX}/events`, async (req, res) => {
+    try {
+        // debug(`PUT request on ${req.originalUrl}`);
+        debug_req(req);
+        if (!mongo.isConnected()) {
+            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            return;
+        }
+        const query = req.query;
+        if (!query.title && !query.message && !query.date && !query.duration) {
+            res.status(400).send("No parameter given! Unable to update");
+            return;
+        }
+        res.status(201).end();
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
 app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
   mongo.connect();
 });
+
+function debug(msg) {
+    if (DEBUG)
+        console.log(msg);
+}
+
+function debug_req(req) {
+    if (DEBUG)
+        console.log(`${req.method} request on ${req.originalUrl}.${(req.body ? "Body: " + req.body : "")}`);
+}
+
+/* Template To Copy
+    try {
+        if (!mongo.isConnected()) {
+            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            return;
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+*/
