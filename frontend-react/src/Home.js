@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // eslint-disable-next-line
-import { Button, Row, Col} from "react-bootstrap";
+import { Button, Container} from "react-bootstrap";
 
 export default function Content() {
     const [isLoading, setLoading] = useState(false);
@@ -16,10 +16,13 @@ export default function Content() {
     const handleClick = () => setLoading(true);
 
     return (
-        <div>
-            <Button variant="primary" disabled={isLoading} onClick={!isLoading ? handleClick : null}>
-                {isLoading ? "Creating Event..." : "Create Event"}
-            </Button>
+        <div className="mt-5">
+        <Button variant="primary" disabled={isLoading} onClick={!isLoading ? handleClick : null}>
+            {isLoading ? "Creating Event..." : "Create Event"}
+        </Button>   
+        <Button variant="primary" disabled={isLoading} onClick={!isLoading ? handleClick : null}>
+            {isLoading ? "Deleting Event..." : "Delete Event"}
+        </Button>
         </div>
     );
 }
