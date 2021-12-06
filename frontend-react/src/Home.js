@@ -18,13 +18,15 @@ export default function Content() {
 
     const num = 5
     const items = []
+
+    //Show x Event Cards
     for (var i=1;i<=num;i++) {
         items.push(<EventCard event_title={"Event Nr. " + i}  event_description="Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiu" event_duration="XX.YY" event_date="TT.MM.JJJJ"/>);        
        
     }
     return (
         <div className="mt-5">
-
+            {/*-----BUTTONS-----*/}
             <Button variant="primary" onClick={handleShow_new_event}>
                 Neues Event
             </Button>
@@ -32,6 +34,8 @@ export default function Content() {
             <Button variant="primary" onClick={handleShow_delete_event}>
                 Alle Events löschen
             </Button>
+
+
 
 
             <Modal
