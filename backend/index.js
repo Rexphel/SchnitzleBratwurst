@@ -16,7 +16,6 @@ app.get(`${PREFIX}`, (req, res) => {
 
 app.get(`${PREFIX}/events`, async (req, res) => {
     try {
-        // debug(`GET request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
@@ -32,7 +31,6 @@ app.get(`${PREFIX}/events`, async (req, res) => {
 
 app.get(`${PREFIX}/events/:eventId`, async (req, res) => {
     try {
-        // debug(`GET request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
@@ -50,7 +48,6 @@ app.get(`${PREFIX}/events/:eventId`, async (req, res) => {
 
 app.post(`${PREFIX}/events`, async (req, res) => {
     try {
-        // debug(`POST request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
@@ -73,7 +70,6 @@ app.post(`${PREFIX}/events`, async (req, res) => {
 
 app.put(`${PREFIX}/events`, async (req, res) => {
     try {
-        // debug(`PUT request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
