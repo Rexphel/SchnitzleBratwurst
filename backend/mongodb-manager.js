@@ -1,10 +1,16 @@
+var ObjectId = require('mongodb').ObjectId;
+
 async function getAllElements(collection) {
     return await collection.find().toArray();
 }
 
-async function addEvent(collection, id, title, message, date) {
+async function getElementById(collection, id) {
+    return await collection.find({_id: new ObjectId(id) }).toArray();
+}
+
+async function addEvent(collection, title, message, date) {
+    console.log("Date: ", date);
     data = {
-        "id": id,
         "title": title,
         "message": message,
         "date": date
@@ -24,3 +30,5 @@ async function getIdFromTitle(collection, title) {
 async function updateEvent(collection, id, title, message, date) {
     // TODO
 }
+
+module.exports = {getAllElements, addEvent, deleteEvent, getIdFromTitle, updateEvent, getElementById};

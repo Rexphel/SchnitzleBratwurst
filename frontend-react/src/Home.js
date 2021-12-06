@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // eslint-disable-next-line
-import { Button, Container} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import MyComponent from './TestComponent';
 
 export default function Content() {
