@@ -9,7 +9,7 @@ const PREFIX = "/api";
 const DEBUG = true;
 
 app.get(`${PREFIX}`, (req, res) => {
-  res.send("<h1>Hello, World from the api</h1>");
+  res.send("<h1>Hello, World from the API</h1>");
 });
 
 app.get(`${PREFIX}/events`, async (req, res) => {
@@ -17,7 +17,7 @@ app.get(`${PREFIX}/events`, async (req, res) => {
         // debug(`GET request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
             return;
         }
         const result = await mongoManager.getAllElements(mongo.getCollection());
@@ -33,7 +33,7 @@ app.get(`${PREFIX}/events/:eventId`, async (req, res) => {
         // debug(`GET request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
             return;
         }
         const id = req.params.eventId;
@@ -51,13 +51,13 @@ app.post(`${PREFIX}/events`, async (req, res) => {
         // debug(`POST request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
             return;
         }
-        console.log(req.body);1
+        console.log(req.body);
         const query = req.body;
         if (!query || !query.title || !query.message || !query.date || !query.duration) {
-            res.status(400).send("Not all parameters given! Unable to insert");
+            res.status(400).send("Not all required parameters given! Unable to insert");
             return;
         }
         const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
@@ -76,7 +76,7 @@ app.put(`${PREFIX}/events`, async (req, res) => {
         // debug(`PUT request on ${req.originalUrl}`);
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
             return;
         }
         const query = req.query;
