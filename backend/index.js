@@ -2,6 +2,7 @@ const express = require("express");
 const mongoManager = require("./mongodb-manager");
 const mongo = require("./mongodb-client");
 const { debug_req } = require('./helper.js');
+const fs = require("fs");
 
 const PORT = 8000;
 
@@ -110,6 +111,20 @@ app.get(`${PREFIX}/eventcount`, async (req, res) => {
         }
         const result = await mongoManager.getEventCount(mongo.getCollection());
         res.send({count: result});
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({error: err});
+    }
+});
+
+app.get(`${PREFIX}/version`, async (req, res) => {
+    try {
+        const package = fs.readFileSync('package.json');
+        const packageParse = JSON.parse(package);
+        const expressVersion = 'v' + packageParse.dependencies.express.slice(1);
+        const mongoVersion = 'v' + packageParse.dependencies.mongodb.slice(1);
+        const nodeVersion = process.version;
+        res.status(200).send({express: expressVersion, mongo: mongoVersion, node: nodeVersion});
     } catch (err) {
         console.error(err);
         res.status(500).send({error: err});

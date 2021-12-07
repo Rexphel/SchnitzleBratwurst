@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon backend/index.js",
-    "start": "node backend/index.js && cd frontend-react && npm start"
+    "start": "start node backend/index.js && cd frontend-react && npm start"
   },
   "repository": {
     "type": "git",
