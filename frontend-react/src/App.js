@@ -8,6 +8,9 @@ import { BrowserRouter as Router,
 } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
+const software_version = "2021.12.6.9"
+const event_description_on_card_length = 100
+
 export default function App() {
     return (
         <Router>
@@ -19,9 +22,6 @@ export default function App() {
                         <Router path="/about">
                             <About />
                         </Router>
-                        <Route path="/settings">
-                            <Settings />
-                        </Route>
                         <Route path="/">
                             <Home />
                         </Route>
@@ -33,6 +33,4 @@ export default function App() {
 }
 
 
-function Settings() {
-    return <h2>Settings</h2>;
-}
+export { software_version, event_description_on_card_length };

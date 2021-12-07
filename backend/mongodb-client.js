@@ -34,5 +34,4 @@ function isConnected() {
 function getClient() { return client; }
 function getDb() { return db; }
 function getCollection() { return collection; }
-
 module.exports = {connect, isConnected, disconnect, getClient, getDb, getCollection};
