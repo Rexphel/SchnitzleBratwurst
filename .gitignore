@@ -165,7 +165,7 @@ dist
 /build
 
 #packag-lock
-./frontend-react/package-lock.json
+.frontend-react/package-lock.json
 
 # misc
 .DS_Store
