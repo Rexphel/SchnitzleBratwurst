@@ -1,5 +1,6 @@
-const mongo = require("mongod");
-const MongoCLient = mongo.MongoCLient;
+// const mongo = require("mongodb");
+// const MongoClient = mongo.MongoClient;
+const MongoClient = require("mongodb").MongoClient;
 
 const dbName = "Schnitzel";
 const mongoUri = `mongodb+srv://webeng:fwM9e7Q7PxneneR@cluster0.jldxk.mongodb.net/${dbName}?retryWrites=true&w=majority`;
@@ -8,10 +9,10 @@ const collectionName = "Bratwurst";
 let client;
 let db, collection;
 
-function connect() {
+async function connect() {
 
     try {
-        client = await MongoCLient.connect(mongoUri, {useUnifiedTopology: true});
+        client = await MongoClient.connect(mongoUri, {useUnifiedTopology: true});
         console.log("Connected to Database");
         db = client.db(dbName);
         collection = db.collection(collectionName);
@@ -32,6 +33,5 @@ function isConnected() {
 
 function getClient() { return client; }
 function getDb() { return db; }
-function getCollection { return collection; }
-
+function getCollection() { return collection; }
 module.exports = {connect, isConnected, disconnect, getClient, getDb, getCollection};
