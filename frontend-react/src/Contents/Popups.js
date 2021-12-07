@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
-import Content from './Home';
+import Content from '../Home';
 
 
 

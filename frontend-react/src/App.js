@@ -9,6 +9,7 @@ import { BrowserRouter as Router,
 import { Container } from "react-bootstrap";
 
 const software_version = "2021.12.6.9"
+const event_description_on_card_length = 100
 
 export default function App() {
     return (
@@ -32,4 +33,4 @@ export default function App() {
 }
 
 
-export { software_version };
+export { software_version, event_description_on_card_length };
