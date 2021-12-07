@@ -18,14 +18,14 @@ app.get(`${PREFIX}/events`, async (req, res) => {
     try {
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
         const result = await mongoManager.getAllElements(mongo.getCollection());
         res.send(result);
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.status(500).send({error: err});
     }
 });
 
@@ -33,16 +33,22 @@ app.get(`${PREFIX}/events/:eventId`, async (req, res) => {
     try {
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
         const id = req.params.eventId;
+
+        const inCollection = await mongoManager.isElementInCollection(mongo.getCollection(), id);
+        if (!inCollection) {
+            res.status(400).send({error: "This element does not exist!"});
+            return;
+        }
 
         const result = await mongoManager.getElementById(mongo.getCollection(), id);
         res.send(result);
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.status(500).send({error: err});
     }
 });
 
@@ -50,12 +56,12 @@ app.post(`${PREFIX}/events`, async (req, res) => {
     try {
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
         const query = req.body;
         if (!query || !query.title || !query.message || !query.date || !query.duration) {
-            res.status(400).send("Not all required parameters given! Unable to insert");
+            res.status(400).send({error: "Not all required parameters given! Unable to insert"});
             return;
         }
         const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
@@ -64,7 +70,7 @@ app.post(`${PREFIX}/events`, async (req, res) => {
         res.status(201).end();
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.status(500).send({error: err});
     }
 });
 
@@ -72,18 +78,18 @@ app.put(`${PREFIX}/events`, async (req, res) => {
     try {
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Please retry in a few seconds.");
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
         const query = req.query;
         if (!query.title && !query.message && !query.date && !query.duration) {
-            res.status(400).send("No parameter given! Unable to update");
+            res.status(400).send({error: "No parameter given! Unable to update"});
             return;
         }
         res.status(201).end();
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.status(500).send({error: err});
     }
 });
 
@@ -91,15 +97,19 @@ app.get(`${PREFIX}/eventcount`, async (req, res) => {
     try {
         debug_req(req);
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
         const result = await mongoManager.getEventCount(mongo.getCollection());
         res.send({count: result});
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.status(500).send({error: err});
     }
+});
+
+app.use((req, res, next) => {
+    res.status(404).send({error: "Nothing found here...", errorCode: 404});
 });
 
 app.listen(PORT, () => {
@@ -125,12 +135,12 @@ function debug_req(req) {
 /* Template To Copy
     try {
         if (!mongo.isConnected()) {
-            res.status(500).send("Database not connected (yet)! Retry in a few seconds.");
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
 
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.status(500).send({error: err});
     }
 */

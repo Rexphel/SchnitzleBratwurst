@@ -6,7 +6,14 @@ async function getAllElements(collection) {
 }
 
 async function getElementById(collection, id) {
+    if (id.length != 24) {
+        throw "ID hast to be 24 characters long";
+    }
     return await collection.find({_id: new ObjectId(id) }).toArray();
+}
+
+async function isElementInCollection(collection, id) {
+    return (await getElementById(collection, id)).length > 0;
 }
 
 async function addEvent(collection, title, message, date, duration) {
@@ -46,4 +53,4 @@ async function updateEvent(collection, id, update) {
     }
 }
 
-module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById, getEventCount};
+module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById, getEventCount, isElementInCollection};
