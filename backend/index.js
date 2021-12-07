@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoManager = require("./mongodb-manager");
 const mongo = require("./mongodb-client");
+const { debug_req } = require('./helper.js');
+
 const PORT = 8000;
 
 const app = express();
 const PREFIX = "/api";
 
-const DEBUG = true;
 
 app.use(express.json());
 
@@ -74,19 +75,26 @@ app.post(`${PREFIX}/events`, async (req, res) => {
     }
 });
 
-app.put(`${PREFIX}/events`, async (req, res) => {
+app.put(`${PREFIX}/events/:eventId`, async (req, res) => {
     try {
         debug_req(req);
         if (!mongo.isConnected()) {
             res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
             return;
         }
-        const query = req.query;
-        if (!query.title && !query.message && !query.date && !query.duration) {
+        const query = req.body;
+        const eventId = req.params.eventId;
+        if (!query || (!query.title && !query.message && !query.date && !query.duration)) {
             res.status(400).send({error: "No parameter given! Unable to update"});
             return;
         }
-        res.status(201).end();
+        const result = await mongoManager.updateEvent(mongo.getCollection(), eventId, query);
+        if (!result.acknowledged) {
+            res.status(500).send({error: "Could not update!", done: false});
+            return;
+        }
+        res.status(202).send({done: true});
+        // res.status(201).end();
     } catch (err) {
         console.error(err);
         res.status(500).send({error: err});
@@ -116,21 +124,6 @@ app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
   mongo.connect();
 });
-
-function debug(msg) {
-    if (DEBUG)
-        console.log(msg);
-}
-
-function debug_req(req) {
-    if (DEBUG) {
-        console.log(`${req.method} request on ${req.originalUrl}.`);
-        if (Object.keys(req.body) > 0) {
-            console.log("Body:");
-            console.dir(req.body);
-        }
-    }
-}
 
 /* Template To Copy
     try {
