@@ -7,6 +7,8 @@ import EventCard from './Contents/Card';
 //import { popup_new_event, popup_delete_event } from './Contents/Popups'
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
+import { DateTime } from 'react-datetime-bootstrap';
+
 export default function Content() {
 
     const [show_new_event, setShow_new_event] = useState(false);
@@ -85,7 +87,15 @@ export default function Content() {
                         <Form.Control as="textarea"  style={{ height: '100px' }}/>
                     </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="inputEventDate">
+                        <Form.Label>Datum</Form.Label>
+                        <Form.Control type="date"   style={{ width: '140px' }}/>
+                    </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="inputEventDuration">
+                        <Form.Label>Dauer</Form.Label>
+                        <Form.Control type="date"   style={{ width: '140px' }}/>
+                    </Form.Group>
                 </Form>
             </Modal.Body>
 

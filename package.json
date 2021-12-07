@@ -27,7 +27,9 @@
   "homepage": "https://github.com/Rexphel/SchnitzleBratwurst#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongodb": "^4.2.1"
+    "mongodb": "^4.2.1",
+    "react-datetime-bootstrap": "^1.4.7",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
