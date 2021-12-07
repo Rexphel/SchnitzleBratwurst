@@ -23,11 +23,11 @@ export default function Content() {
     //Show x Event Cards
     for (var i=1;i<=num;i++) {
         items.push(<EventCard event_title={"Event Nr. " + i}  event_description="Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiu" event_duration="XX.YY" event_date="TT.MM.JJJJ"/> );        
-        items.push(" ")
+
     }
     return (
         
-        <div className="mt-5">
+        <div className="mt-3">
             {/*-----BUTTONS-----*/}
             <Button variant="primary" onClick={handleShow_new_event}>
                 Neues Event
@@ -103,13 +103,9 @@ export default function Content() {
                 </Modal.Footer>
             </Modal>
         <hr />
-           
-                <Row xs={1} sm={2} md={3} lg={3} xl={3} xxl={4}> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400*/}
-                    <Col>{items} </Col>  
-                    <Col>{items} </Col>
-                    <Col>{items} </Col>
-                    <Col>{items} </Col>
-                    
+            {/*!!!WORK HERE!!!*/} 
+                <Row xs={1} sm={2} md={3} lg={3} xl={3} xxl={4}> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400 */}
+                    {items}
                 </Row>
            
         </div>
