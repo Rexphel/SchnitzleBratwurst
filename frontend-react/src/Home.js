@@ -278,27 +278,18 @@ export default function Content() {
 }
 
 function fetchCardInfo() {
-var result
-
-
-fetch("http://localhost/endpoint", {
-method: "get"
-})
-.then(response => response.text())
-.then(text => console.log(`Response body: ${text}`))
-.catch(err => console.err(err))
 
 //-> Fetch Event Count
 //-> Fetch all Event Information
 //-> Show Cards with Event Info
-    result = fetch('localhost:8000/api/events')
+
 }
 
 function fetchCanvasInfo() {
-    var result
+
 //-> Fetch Event
 //-> Show Canvas with Event Information
-        result = fetch('localhost:8000/api/event')
+
 }
 
 function EditEvent() {
