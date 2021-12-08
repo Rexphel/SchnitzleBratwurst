@@ -8,6 +8,9 @@ import EventCard from './Contents/Card';
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
 import { DateTime } from 'react-datetime-bootstrap';
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './Styling/Theme';
+import { GlobalStyles } from './Styling/Global';
 
 export default function Content() {
 
@@ -15,19 +18,29 @@ export default function Content() {
     const handleClose_new_event = () => setShow_new_event(false);
     const handleShow_new_event = () => setShow_new_event(true);
 
+    const [show_edit_event, setShow_edit_event] = useState(false);
+    const handleClose_edit_event = () => setShow_edit_event(false);
+    const handleShow_edit_event = () => setShow_edit_event(true);
+
     const [show_delete_event, setShow_delete_event] = useState(false);
     const handleClose_delete_event = () => setShow_delete_event(false);
     const handleShow_delete_event = () => setShow_delete_event(true);
+
+    const [show_delete_all_events, setShow_delete_all_events] = useState(false);
+    const handleClose_delete_all_events = () => setShow_delete_all_events(false);
+    const handleShow_delete_all_events = () => setShow_delete_all_events(true);
 
     const [show_event_canvas, setShow_event_canvas] = useState(false);
     const handleClose_event_canvas = () => setShow_event_canvas(false);
     const handleShow_event_canvas = () => setShow_event_canvas(true); 
 
-    const num = 10
+    const num = 6
     const items = []
-
+    const API = "localhost:8000/api/events"
+    const bgColor = darkTheme.body
+    const txtColor = darkTheme.text
     var event_title = "Mega wichtiges Event";
-    var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiu";
+    var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiuiuherg o gg glwejgöosuhas.lsakngiuesröbl-aiskngöioeli-fjwsgoiäeLAFJKn weg8923o0wrq9ij43n29oö rihf384woerisjf knmwpeasdk,mxc we8 9ü   23o9öwiedkhjk";
     var event_duration = "SS:MM";
     var event_date = "TT.MM.JJJJ";
 
@@ -37,73 +50,152 @@ export default function Content() {
 
     }
     return (
-        
+        <ThemeProvider theme={darkTheme}>
+        <GlobalStyles />    
         <div className="mt-3">
+        
             {/*-----BUTTONS-----*/}
             <Button variant="primary" onClick={handleShow_new_event}>
                 Neues Event
             </Button>
             &nbsp;&nbsp;
-            <Button variant="primary" onClick={handleShow_delete_event}>
+            <Button variant="primary" onClick={handleShow_delete_all_events}>
                 Alle Events löschen
             </Button>
             &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_event_canvas}>
                 Testknopp
             </Button>
-
-
+            &nbsp;&nbsp;
+            <Button variant="secondary" onClick={handleShow_delete_event}>
+                Testknopp2
+            </Button>
+            &nbsp;&nbsp;
+            <Button variant="secondary" onClick={handleShow_edit_event}>
+                Testknopp3
+            </Button>          
 
 
         <hr />
             {/*!!!WORK HERE!!!*/} 
-                <Row xs={1} sm={2} md={3} lg={3} xl={3} xxl={4}> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400 */}
-                    {items}
-                </Row>
-
-
+            
+            <Form className="mb-3 d-flex justify-content-around" >
+                <Row> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400 */}
+                    {items}   
+                </Row>    
+            </Form>
+            
         {/*-----NEW EVENT POPUP-----*/}
         <Modal
             show={show_new_event}
             onHide={handleClose_new_event}
             backdrop="static"
             keyboard={false}
+            
         >
-            <Modal.Header>
+            <Modal.Header style={{ backgroundColor: bgColor }}>
                 <Modal.Title>Neues Event</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>
+            <Modal.Body style={{ backgroundColor: bgColor }}>
                 <Form>
-                    <Form.Group className="mb-3" controlId="inputEventTitle">
+                    <Form.Group className="mb-3" controlId="inputEventTitle" style={{ backgroundColor: bgColor }}>
                         <Form.Label>Titel</Form.Label>
-                        <Form.Control type="text" />
+                        <Form.Control type="text" style={{ backgroundColor: bgColor, color: txtColor}} placeholder="Mega wichtiges Event!" />
                         <Form.Text className="text-muted">
                         </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="inputEventDescription">
                         <Form.Label>Beschreibung</Form.Label>
-                        <Form.Control as="textarea"  style={{ height: '100px' }}/>
+                        <Form.Control as="textarea"  style={{ height: '100px', backgroundColor: bgColor, color: txtColor }} placeholder="Ganz wichtige Beschreibung für mega wichtiges Event!"/>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="inputEventDate">
-                        <Form.Label>Datum</Form.Label>
-                        <Form.Control type="date"   style={{ width: '140px' }}/>
-                    </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="inputEventDuration">
-                        <Form.Label>Dauer</Form.Label>
-                        <Form.Control type="date"   style={{ width: '140px' }}/>
-                    </Form.Group>
+                    <Form className="mb-3 d-md-flex justify-content-between">
+                        <Form.Group className="mb-3" controlId="inputEventDate">
+                            <Form.Label>Datum</Form.Label>
+                            <Form.Control type="date" style={{ width: '135px' , backgroundColor: bgColor, color: txtColor }} required="true" />
+                        </Form.Group>
+                       
+                        <Form.Group className="mb-3" controlId="inputEventDate">
+                            <Form.Label>Zeit</Form.Label>
+                            <Form.Control type="time" style={{ width: '135px' , backgroundColor: bgColor, color: txtColor }} required="true"/>
+                        </Form.Group>
+                        
+                        <Form.Group className="mb-3" controlId="inputEventDuration">
+                            <Form.Label>Dauer</Form.Label>
+                            <Form.Control type="time" defaultValue="00:00" style={{ width: '135px' , backgroundColor: bgColor, color: txtColor }} required="true" />
+                        </Form.Group>
+
+                    </Form>
+ 
                 </Form>
             </Modal.Body>
 
-            <Modal.Footer>
+            <Modal.Footer style={{ backgroundColor: bgColor }}>
                 <Button variant="secondary" onClick={handleClose_new_event}>
                     Abbrechen
                 </Button>
                 <Button variant="primary" onClick={handleClose_new_event}>
+                    Speichern
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+        {/*-----EDIT EVENT POPUP-----*/}
+        <Modal
+            show={show_edit_event}
+            onHide={handleClose_edit_event}
+            backdrop="static"
+            keyboard={false}
+            
+        >
+            <Modal.Header style={{ backgroundColor: bgColor }}>
+                <Modal.Title>Event bearbeiten</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body style={{ backgroundColor: bgColor }}>
+                <Form>
+                    <Form.Group className="mb-3" controlId="inputEventTitle" style={{ backgroundColor: bgColor }}>
+                        <Form.Label>Titel</Form.Label>
+                        <Form.Control type="text" style={{ backgroundColor: bgColor, color: txtColor}} placeholder="Mega wichtiges Event!" />
+                        <Form.Text className="text-muted">
+                        </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="inputEventDescription">
+                        <Form.Label>Beschreibung</Form.Label>
+                        <Form.Control as="textarea"  style={{ height: '100px', backgroundColor: bgColor, color: txtColor }} placeholder="Ganz wichtige Beschreibung für mega wichtiges Event!"/>
+                    </Form.Group>
+
+
+                    <Form className="mb-3 d-md-flex justify-content-between">
+                        <Form.Group className="mb-3" controlId="inputEventDate">
+                            <Form.Label>Datum</Form.Label>
+                            <Form.Control type="date" style={{ width: '135px' , backgroundColor: bgColor, color: txtColor }} required="true" />
+                        </Form.Group>
+                       
+                        <Form.Group className="mb-3" controlId="inputEventDate">
+                            <Form.Label>Zeit</Form.Label>
+                            <Form.Control type="time" style={{ width: '135px' , backgroundColor: bgColor, color: txtColor }} required="true"/>
+                        </Form.Group>
+                        
+                        <Form.Group className="mb-3" controlId="inputEventDuration">
+                            <Form.Label>Dauer</Form.Label>
+                            <Form.Control type="time" defaultValue="00:00" style={{ width: '135px' , backgroundColor: bgColor, color: txtColor }} required="true" />
+                        </Form.Group>
+
+                    </Form>
+ 
+                </Form>
+            </Modal.Body>
+
+            <Modal.Footer style={{ backgroundColor: bgColor }}>
+                <Button variant="secondary" onClick={handleClose_edit_event}>
+                    Abbrechen
+                </Button>
+                <Button variant="primary" onClick={handleClose_edit_event}>
                     Speichern
                 </Button>
             </Modal.Footer>
@@ -117,14 +209,14 @@ export default function Content() {
             backdrop="static"
             keyboard={false}
         >
-            <Modal.Header>
-                <Modal.Title>Event löschen</Modal.Title>
+            <Modal.Header style={{ backgroundColor: bgColor }}>
+                <Modal.Title>Event löschen?</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>
+            <Modal.Body style={{ backgroundColor: bgColor }}>
                 <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher löschen? </h4>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={{ backgroundColor: bgColor }}>
                 <Button variant="success" onClick={handleClose_delete_event}>
                     Doch nich!
                 </Button>
@@ -134,11 +226,41 @@ export default function Content() {
             </Modal.Footer>
         </Modal>
 
-        <Offcanvas show={show_event_canvas} onHide={handleClose_event_canvas}>
-                        <Offcanvas.Header closeButton>
-                            <Offcanvas.Title>{event_title}</Offcanvas.Title>
+        {/*-----DELETE ALL EVENTS POPUP-----*/}
+        <Modal
+            show={show_delete_all_events}
+            onHide={handleClose_delete_all_events}
+            backdrop="static"
+            keyboard={false}
+        >
+            <Modal.Header style={{ backgroundColor: bgColor }}>
+                <Modal.Title>Alle Events löschen?</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body style={{ backgroundColor: bgColor }}>
+                <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher wirklich ALLE Events löschen? 
+                <br></br><br></br>
+                 Rückgängig is nich! </h4>
+            </Modal.Body>
+            <Modal.Footer style={{ backgroundColor: bgColor }}>
+                <Button variant="success" onClick={handleClose_delete_all_events}>
+                    Ok ne
+                </Button>
+                <Button variant="danger" onClick={handleClose_delete_all_events}>
+                    *nuke it*
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+
+
+        <Offcanvas  show={show_event_canvas} onHide={handleClose_event_canvas} style={{ backgroundColor: bgColor}} >
+                        <Offcanvas.Header closeButton closeVariant='white'>
+                            <Offcanvas.Title><h3>{event_title}</h3></Offcanvas.Title>
                         </Offcanvas.Header>
-                        <Offcanvas.Body>
+                        <Offcanvas.Body bg-color='dark'>
+                        <Offcanvas.Title><h4> Am: {event_date}</h4><h5> für {event_duration}</h5> </Offcanvas.Title>
+                            <hr />
                             {event_description}
                         </Offcanvas.Body>
                     </Offcanvas>
@@ -147,9 +269,34 @@ export default function Content() {
 
 
         </div>
-        
-        
     
+    
+        
+    </ThemeProvider>
     );
+
+}
+
+function fetchCardInfo() {
+
+//-> Fetch Event Count
+//-> Fetch all Event Information
+//-> Show Cards with Event Info
+
+}
+
+function fetchCanvasInfo() {
+
+//-> Fetch Event
+//-> Show Canvas with Event Information
+
+}
+
+function EditEvent() {
+
+//-> Fetch Event
+//-> Show Edit Modal with current Event Information
+//-> Let user Edit Modal
+//-> Save updated Event
 
 }
