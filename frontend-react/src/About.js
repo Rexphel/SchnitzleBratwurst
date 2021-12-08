@@ -1,6 +1,10 @@
 import { software_version } from './App';
 import React from 'react';
 import FetchComponent from './Contents/FetchExperiment';
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './Styling/Theme';
+import { GlobalStyles } from './Styling/Global';
+
 //import process from NodeJS
 
 const NODE_VERSION = process.version
@@ -10,6 +14,8 @@ const MONGODB_VERSION = "---"
 
 export default function About() {
     return (
+        <ThemeProvider theme={darkTheme}>
+        <GlobalStyles /> 
         <div>
             <br />
             <h1>Simple Event Manager  Ver.&nbsp;{software_version} </h1>
@@ -25,5 +31,6 @@ export default function About() {
 
             <FetchComponent />
         </div>
+        </ThemeProvider>
     );
 }

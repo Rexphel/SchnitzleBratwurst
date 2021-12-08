@@ -8,7 +8,7 @@ import EventCard from './Contents/Card';
 //import { popup_new_event, popup_delete_event } from './Contents/Popups'
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
-import { DateTime } from 'react-datetime-bootstrap';
+//import { DateTime } from 'react-datetime-bootstrap';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
@@ -72,12 +72,16 @@ class Content extends React.Component {
         this.setState({});
     }
 
+   
+
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
         this.setState({});
     }
 
     render() {
+      
+       //Show x Event Cards
         this.items = [];
         for (var i = 1; i <= num; i++) {
             this.items.push(<EventCard event_title={event_title} event_description={event_description} event_duration={event_duration} event_date={event_date} />);
@@ -110,16 +114,16 @@ class Content extends React.Component {
             <Button variant="secondary" onClick={handleShow_edit_event}>
                 Testknopp3
             </Button>           */}
+         
 
 
-                    <hr />
-                    {/*!!!WORK HERE!!!*/}
+        <hr />
+            {/*!!!WORK HERE!!!*/} 
+            {/*   class="m-auto d-flex justify-content-between"*/}
 
-                    <Form className="mb-3 d-flex justify-content-around" >
-                        <Row> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400 */}
-                            {this.items}
-                        </Row>
-                    </Form>
+                    <div class="d-flex justify-content-center flex-wrap" >
+                        {this.items}   
+                    </div> 
 
                     <NewEventPopup/>
 

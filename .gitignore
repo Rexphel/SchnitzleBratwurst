@@ -166,7 +166,7 @@ dist
 
 #packag-lock
 .frontend-react/package-lock.json
-
+package-lock.json
 # misc
 .DS_Store
 .env.local
