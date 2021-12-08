@@ -29,7 +29,7 @@ export default function About() {
             <h4> ReactJS Version: {REACT_VERSION}</h4>
             <h4> MongoDB Version: {MONGODB_VERSION}</h4>
 
-            <FetchComponent />
+            {/* <FetchComponent /> */}
         </div>
         </ThemeProvider>
     );
