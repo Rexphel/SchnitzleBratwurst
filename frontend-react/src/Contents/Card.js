@@ -26,10 +26,10 @@ class EventCard extends React.Component {
                 event_description = this.props.event_description
             }
             return (
-                <ThemeProvider theme={darkTheme}>
-                
-                    <Card border="primary" bg='dark'  text='light' style={{ width: '16rem' }}>
-                        <Card.Header>
+              
+                    <div class=" m-1 ">
+                    <Card border="primary" bg='dark' text='light' style={{ width: '16rem' }}>
+                        <Card.Header >
                             <Card.Title>{this.props.event_title}</Card.Title>
                         </Card.Header>
                         <Card.Body>
@@ -46,7 +46,8 @@ class EventCard extends React.Component {
                             <Button variant="danger" size='sm'>Löschen</Button>
                         </Card.Body>
                     </Card>
-                </ThemeProvider>
+                    </div>
+               
             )
     }
     

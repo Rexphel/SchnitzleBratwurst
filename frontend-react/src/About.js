@@ -1,6 +1,8 @@
 import { software_version } from './App';
 import React from 'react';
-//import process from NodeJS
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './Styling/Theme';
+import { GlobalStyles } from './Styling/Global';
 
 const NODE_VERSION = process.version
 const EXPRESS_VERSION = "---"
@@ -9,6 +11,8 @@ const MONGODB_VERSION = "---"
 
 export default function About() {
     return (
+        <ThemeProvider theme={darkTheme}>
+        <GlobalStyles /> 
         <div>
             <br />
             <h1>Simple Event Manager  Ver.&nbsp;{software_version} </h1>
@@ -22,5 +26,6 @@ export default function About() {
             <h4> ReactJS Version: {REACT_VERSION}</h4>
             <h4> MongoDB Version: {MONGODB_VERSION}</h4>
         </div>
+        </ThemeProvider>
     );
 }
