@@ -34,7 +34,7 @@ export default function Content() {
     const handleClose_event_canvas = () => setShow_event_canvas(false);
     const handleShow_event_canvas = () => setShow_event_canvas(true); 
 
-    const num = 5
+    const num = 8
     const items = []
     const API = "localhost:8000/api/events"
     const bgColor = darkTheme.body
