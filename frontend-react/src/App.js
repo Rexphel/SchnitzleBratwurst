@@ -1,6 +1,7 @@
 import "./App.css"; 
 import Navigation from './Navigation';
 import Home from './Home';
+// import { ModalContext } from './Home';
 import About from './About';
 import { BrowserRouter as Router,
     Switch,
@@ -16,21 +17,23 @@ export default function App() {
     
     return (
 
-        <Router>
-            <div>
-                <Navigation />
-                <Container>
-                    <Switch>
-                        <Router path="/about">
-                            <About />
-                        </Router>
-                        <Route path="/">
-                            <Home />
-                        </Route>
-                    </Switch>
-                </Container>
-            </div>
-        </Router>
+        // <ModalContext.Provider >
+            <Router>
+                <div>
+                    <Navigation />
+                    <Container>
+                        <Switch>
+                            <Router path="/about">
+                                <About />
+                            </Router>
+                            <Route path="/">
+                                <Home />
+                            </Route>
+                        </Switch>
+                    </Container>
+                </div>
+            </Router>
+        // </ModalContext.Provider>
        
     );
     
