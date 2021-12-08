@@ -33,7 +33,7 @@ class EventCard extends React.Component {
                             <Card.Title>{this.props.event_title}</Card.Title>
                         </Card.Header>
                         <Card.Body>
-                            <Card.Title><h5>Am: {this.props.event_date}</h5><h5>Dauer: {this.props.event_duration}</h5>  </Card.Title>
+                            <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
                             <Card.Text>
                                 {event_description}
                                     <Button variant='link' size='sm'>Weiterlesen</Button>
