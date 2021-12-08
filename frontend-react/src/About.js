@@ -3,7 +3,10 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
+<<<<<<< HEAD
 //import process from NodeJS
+=======
+>>>>>>> fa87ea4c491b3fcae5c154cba792cc92c54cf8e8
 
 const NODE_VERSION = process.version
 const EXPRESS_VERSION = "---"
@@ -12,9 +15,14 @@ const MONGODB_VERSION = "---"
 
 export default function About() {
     return (
+<<<<<<< HEAD
 
         <ThemeProvider theme={darkTheme}>
         <GlobalStyles />   
+=======
+        <ThemeProvider theme={darkTheme}>
+        <GlobalStyles /> 
+>>>>>>> fa87ea4c491b3fcae5c154cba792cc92c54cf8e8
         <div>
             <br />
             <h1>Simple Event Manager  Ver.&nbsp;{software_version} </h1>

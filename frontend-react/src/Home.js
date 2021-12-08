@@ -7,7 +7,7 @@ import EventCard from './Contents/Card';
 //import { popup_new_event, popup_delete_event } from './Contents/Popups'
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
-import { DateTime } from 'react-datetime-bootstrap';
+//import { DateTime } from 'react-datetime-bootstrap';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
@@ -34,7 +34,11 @@ export default function Content() {
     const handleClose_event_canvas = () => setShow_event_canvas(false);
     const handleShow_event_canvas = () => setShow_event_canvas(true); 
 
+<<<<<<< HEAD
     const num = 10
+=======
+    const num = 8
+>>>>>>> fa87ea4c491b3fcae5c154cba792cc92c54cf8e8
     const items = []
     const API = "localhost:8000/api/events"
     const bgColor = darkTheme.body
@@ -78,12 +82,12 @@ export default function Content() {
 
         <hr />
             {/*!!!WORK HERE!!!*/} 
-            
-            <Form className="mb-3 d-flex justify-content-around" >
-                <Row> {/*xs <576px, sm >=576px, md >=768px, lg >=992px, xl >=1200px, xxl >=1400 */}
-                    {items}   
-                </Row>    
-            </Form>
+            {/*   class="m-auto d-flex justify-content-between"*/}
+
+                    <div class="d-flex justify-content-center flex-wrap" >
+                        {items}   
+                    </div> 
+
             
         {/*-----NEW EVENT POPUP-----*/}
         <Modal
