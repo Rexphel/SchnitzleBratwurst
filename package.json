@@ -29,7 +29,8 @@
     "express": "^4.17.1",
     "mongodb": "^4.2.1",
     "react-datetime-bootstrap": "^1.4.7",
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
