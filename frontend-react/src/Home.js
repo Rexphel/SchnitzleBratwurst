@@ -14,6 +14,7 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
 import { NewEventPopup, DeleteAllPopup } from "./Contents/NewPopup";
+import { setEventCount } from "./util/helper";
 
 export const ModalContext = {
     newEvent: false,
@@ -23,7 +24,7 @@ export const ModalContext = {
     eventCanvas: false
 };
 
-const num = 4
+export var num = 3;
 const API = "localhost:8000/api/events"
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -36,6 +37,12 @@ class Content extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            isLoaded: false,
+            error: null,
+            events: []
+        }
 
         // const new_event = useState(false);
         // this.show_new_event = new_event[0];
@@ -66,6 +73,19 @@ class Content extends React.Component {
         // const [show_event_canvas, setShow_event_canvas] = useState(false);
         // const handleClose_event_canvas = () => setShow_event_canvas(false);
         // const handleShow_event_canvas = () => setShow_event_canvas(true);
+    }
+
+    componentDidMount() {
+        console.log("Hello, sdfasdg yo");
+        fetch("http://localhost:8000/api/events")
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, events: result});
+                }
+            }).catch(err => console.error(err));
     }
 
     handleShowNewEvent() {
@@ -104,6 +124,7 @@ class Content extends React.Component {
                     <Button variant="primary" onClick={this.handleShowDeleteAllEvents.bind(this)}>
                         Alle Events löschen
                     </Button>
+                    <Button onClick={setEventCount}>FUCK YOU</Button>
                     {/* &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_event_canvas}>
                 Testknopp
