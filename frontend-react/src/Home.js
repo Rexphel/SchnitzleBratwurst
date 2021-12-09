@@ -103,11 +103,20 @@ class Content extends React.Component {
     render() {
       
        //Show x Event Cards
-        this.items = [];
-       for (var i = 1; i <= num; i++) {
-            this.items.push(<EventCard event_title={event_title} event_description={event_description} event_duration={event_duration} event_date={event_date} />);
-            // this.items.push(<LoadingCard />)
-        }
+        this.items = []
+            if (this.state.isLoaded) {
+               // if {!this.state.error}
+                for (const event of this.state.events) {
+                this.items.push(<EventCard event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={event.date} />);
+                }
+            }  else {
+                this.items.push(<LoadingCard />);
+                this.items.push(<LoadingCard />);
+                this.items.push(<LoadingCard />);
+                this.items.push(<LoadingCard />);
+            }  
+
+        
         
         return (
             //Show x Event Cards
@@ -145,6 +154,7 @@ class Content extends React.Component {
             {/*   class="m-auto d-flex justify-content-between"*/}
 
                     <div class="d-flex justify-content-center flex-wrap" >
+                        
                         {this.items}   
                     </div> 
 
