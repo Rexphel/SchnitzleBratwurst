@@ -76,6 +76,33 @@ app.post(`${PREFIX}/events`, async (req, res) => {
     }
 });
 
+
+app.delete(`${PREFIX}/events/:eventId`, async (req, res) => {
+    try {
+        debug_req(req);
+        if (!mongo.isConnected()) {
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
+            return;
+        }
+        const id = req.params.eventId;
+        const inCollection = await mongoManager.isElementInCollection(mongo.getCollection(), id);
+        if (!inCollection) {
+            res.status(400).send({error: "This element does not exist!"});
+            return;
+        }
+
+        const result = await mongoManager.deleteEvent(mongo.getCollection(), id);
+        if (!result.acknowledged) {
+            res.status(500).send({error: "Could not delete!", done: false});
+            return;
+        }
+        res.status(202),send({done: true});
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({error: err});
+    }
+});
+
 app.put(`${PREFIX}/events/:eventId`, async (req, res) => {
     try {
         debug_req(req);
