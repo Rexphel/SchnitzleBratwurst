@@ -6,6 +6,7 @@ import { lightTheme, darkTheme } from '../Styling/Theme';
 import { GlobalStyles } from '../Styling/Global';
 
 class EventCard extends React.Component {
+
     constructor(props) {
         super(props)
         this.props = props;
