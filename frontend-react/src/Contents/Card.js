@@ -7,14 +7,12 @@ import { GlobalStyles } from '../Styling/Global';
 
 class EventCard extends React.Component {
 
-
-
     constructor(props) {
         super(props)
         this.props = props;
     }   
 
-        render(){ //event_title="" event_duration="" event_date="" event_description=""
+        render() { //event_title="" event_duration="" event_date="" event_description=""
  
             var event_description;
             var long_event_description;
@@ -40,7 +38,7 @@ class EventCard extends React.Component {
                             
                             </Card.Text>
                         </Card.Body>
-                        <Card.Footer>
+                        <Card.Footer >
                             <Button variant="primary" size='sm'>Bearbeiten</Button>
                             &nbsp;&nbsp;
                             <Button variant="danger" size='sm'>Löschen</Button>

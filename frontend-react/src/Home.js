@@ -14,7 +14,7 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
 import { NewEventPopup, DeleteAllPopup } from "./Contents/NewPopup";
-import { setEventCount } from "./util/helper";
+
 
 export const ModalContext = {
     newEvent: false,
@@ -24,7 +24,6 @@ export const ModalContext = {
     eventCanvas: false
 };
 
-export var num = 3;
 const API = "localhost:8000/api/events"
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -103,18 +102,20 @@ class Content extends React.Component {
     render() {
       
        //Show x Event Cards
-        this.items = []
-            if (this.state.isLoaded) {
-               // if {!this.state.error}
+    this.items = []
+        if (this.state.isLoaded) {
+            if (!this.state.error) {
                 for (const event of this.state.events) {
-                this.items.push(<EventCard event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={event.date} />);
+                    const datetime = event.date.split('-');
+                    this.items.push(<EventCard id={event.id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
                 }
-            }  else {
-                this.items.push(<LoadingCard />);
-                this.items.push(<LoadingCard />);
-                this.items.push(<LoadingCard />);
-                this.items.push(<LoadingCard />);
-            }  
+            }
+        }  else {
+            this.items.push(<LoadingCard />);
+            this.items.push(<LoadingCard />);
+            this.items.push(<LoadingCard />);
+            this.items.push(<LoadingCard />);
+        }  
 
         
         
@@ -133,7 +134,6 @@ class Content extends React.Component {
                     <Button variant="primary" onClick={this.handleShowDeleteAllEvents.bind(this)}>
                         Alle Events löschen
                     </Button>
-                    <Button onClick={setEventCount}>FUCK YOU</Button>
                     {/* &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_event_canvas}>
                 Testknopp
@@ -154,7 +154,6 @@ class Content extends React.Component {
             {/*   class="m-auto d-flex justify-content-between"*/}
 
                     <div class="d-flex justify-content-center flex-wrap" >
-                        
                         {this.items}   
                     </div> 
 
