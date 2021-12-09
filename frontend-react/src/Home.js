@@ -107,7 +107,7 @@ class Content extends React.Component {
             if (!this.state.error) {
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
-                    this.items.push(<EventCard id={event.id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
+                    this.items.push(<EventCard id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
                 }
             }
         }  else {

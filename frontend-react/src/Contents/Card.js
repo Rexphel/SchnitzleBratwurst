@@ -10,7 +10,7 @@ class EventCard extends React.Component {
     constructor(props) {
         super(props)
         this.props = props;
-        this.state = {id: props.id};
+        this.state = {id: this.props.id};
     }
 
     deleteThisEvent() {
@@ -49,7 +49,7 @@ class EventCard extends React.Component {
                     <Card.Footer>
                         <Button variant="primary" size='sm'>Bearbeiten</Button>
                         &nbsp;&nbsp;
-                        <Button variant="danger" size='sm' onClick={this.deleteThisEvent}>Löschen</Button>
+                        <Button variant="danger" size='sm' onClick={this.deleteThisEvent.bind(this)}>Löschen</Button>
                     </Card.Footer>
                 </Card>
             </div>
