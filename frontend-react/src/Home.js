@@ -5,6 +5,7 @@ import { Button, Modal, Form, Offcanvas } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
 import { Row, Col, Container } from 'react-bootstrap';
 import EventCard from './Contents/Card';
+import LoadingCard from './Contents/LoadingCard';
 //import { popup_new_event, popup_delete_event } from './Contents/Popups'
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
@@ -22,7 +23,7 @@ export const ModalContext = {
     eventCanvas: false
 };
 
-const num = 6
+const num = 4
 const API = "localhost:8000/api/events"
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -85,8 +86,9 @@ class Content extends React.Component {
         this.items = [];
        for (var i = 1; i <= num; i++) {
             this.items.push(<EventCard event_title={event_title} event_description={event_description} event_duration={event_duration} event_date={event_date} />);
-
+            // this.items.push(<LoadingCard />)
         }
+        
         return (
             //Show x Event Cards
 
