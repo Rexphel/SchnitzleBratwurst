@@ -12,6 +12,22 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
 
+export var Theme = function ToggleTheme(){
+    const [Theme, setTheme] = useState('dark');
+    const toggleTheme = () => {
+        if (Theme === 'dark'){
+            setTheme('light');
+        }
+        else{
+            setTheme('dark');
+        }  
+    }
+    return{
+
+        Theme
+    }
+}
+
 export default function Content() {
 
     const [show_new_event, setShow_new_event] = useState(false);
@@ -34,11 +50,17 @@ export default function Content() {
     const handleClose_event_canvas = () => setShow_event_canvas(false);
     const handleShow_event_canvas = () => setShow_event_canvas(true); 
 
-<<<<<<< HEAD
+    const [Theme, setTheme] = useState('dark');
+    const toggleTheme = () => {
+        if (Theme === 'dark'){
+            setTheme('light');
+        }
+        else{
+            setTheme('dark');
+        }  
+    }
+
     const num = 10
-=======
-    const num = 8
->>>>>>> fa87ea4c491b3fcae5c154cba792cc92c54cf8e8
     const items = []
     const API = "localhost:8000/api/events"
     const bgColor = darkTheme.body
@@ -54,7 +76,7 @@ export default function Content() {
 
     }
     return (
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
         <GlobalStyles />    
         <div className="mt-3">
         
@@ -77,8 +99,11 @@ export default function Content() {
             &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_edit_event}>
                 Testknopp3
-            </Button>          
-
+            </Button>
+            &nbsp;&nbsp;
+            <Button variant="primary" onClick={toggleTheme}>
+                Toggle Theme
+            </Button>
 
         <hr />
             {/*!!!WORK HERE!!!*/} 
