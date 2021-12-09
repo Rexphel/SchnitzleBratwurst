@@ -5,6 +5,7 @@ import { Button, Modal, Form, Offcanvas } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
 import { Row, Col, Container } from 'react-bootstrap';
 import EventCard from './Contents/Card';
+import LoadingCard from './Contents/LoadingCard';
 //import { popup_new_event, popup_delete_event } from './Contents/Popups'
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
@@ -103,10 +104,11 @@ class Content extends React.Component {
       
        //Show x Event Cards
         this.items = [];
-        for (var i = 1; i <= num; i++) {
+       for (var i = 1; i <= num; i++) {
             this.items.push(<EventCard event_title={event_title} event_description={event_description} event_duration={event_duration} event_date={event_date} />);
-
+            // this.items.push(<LoadingCard />)
         }
+        
         return (
             //Show x Event Cards
 
