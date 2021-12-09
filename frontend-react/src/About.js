@@ -5,7 +5,6 @@ import { Button } from "react-bootstrap";
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
-import { Theme}  from './Home';
 //import process from NodeJS
 
 const NODE_VERSION = process.version
@@ -48,6 +47,8 @@ export default function About() {
             <h4> ExpressJS Version: {EXPRESS_VERSION}</h4>
             <h4> ReactJS Version: {REACT_VERSION}</h4>
             <h4> MongoDB Version: {MONGODB_VERSION}</h4>
+
+            {/* <FetchComponent /> */}
         </div>
         </ThemeProvider>
     );
