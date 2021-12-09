@@ -72,51 +72,7 @@ class Content extends React.Component {
         this.setState({});
     }
 
-export default function Content() {
-
-    const [show_new_event, setShow_new_event] = useState(false);
-    const handleClose_new_event = () => setShow_new_event(false);
-    const handleShow_new_event = () => setShow_new_event(true);
-
-    const [show_edit_event, setShow_edit_event] = useState(false);
-    const handleClose_edit_event = () => setShow_edit_event(false);
-    const handleShow_edit_event = () => setShow_edit_event(true);
-
-    const [show_delete_event, setShow_delete_event] = useState(false);
-    const handleClose_delete_event = () => setShow_delete_event(false);
-    const handleShow_delete_event = () => setShow_delete_event(true);
-
-    const [show_delete_all_events, setShow_delete_all_events] = useState(false);
-    const handleClose_delete_all_events = () => setShow_delete_all_events(false);
-    const handleShow_delete_all_events = () => setShow_delete_all_events(true);
-
-    const [show_event_canvas, setShow_event_canvas] = useState(false);
-    const handleClose_event_canvas = () => setShow_event_canvas(false);
-    const handleShow_event_canvas = () => setShow_event_canvas(true); 
-
-    const [Theme, setTheme] = useState('dark');
-    const toggleTheme = () => {
-        if (Theme === 'dark'){
-            setTheme('light');
-        }
-        else{
-            setTheme('dark');
-        }  
-    }
-
-    const num = 10
-    const items = []
-    const API = "localhost:8000/api/events"
-    const bgColor = darkTheme.body
-    const txtColor = darkTheme.text
-    var event_title = "Mega wichtiges Event";
-    var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiuiuherg o gg glwejgöosuhas.lsakngiuesröbl-aiskngöioeli-fjwsgoiäeLAFJKn weg8923o0wrq9ij43n29oö rihf384woerisjf knmwpeasdk,mxc we8 9ü   23o9öwiedkhjk";
-    var event_duration = "SS:MM";
-    var event_date = "TT.MM.JJJJ";
-
-    //Show x Event Cards
-    for (var i=1;i<=num;i++) {
-        items.push(<EventCard event_title={event_title} event_description={event_description} event_duration={event_duration} event_date={event_date}/> );        
+   
 
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
@@ -127,7 +83,7 @@ export default function Content() {
       
        //Show x Event Cards
         this.items = [];
-        for (var i = 1; i <= num; i++) {
+       for (var i = 1; i <= num; i++) {
             this.items.push(<EventCard event_title={event_title} event_description={event_description} event_duration={event_duration} event_date={event_date} />);
 
         }
@@ -157,11 +113,9 @@ export default function Content() {
             &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_edit_event}>
                 Testknopp3
-            </Button>
-            &nbsp;&nbsp;
-            <Button variant="primary" onClick={toggleTheme}>
-                Toggle Theme
-            </Button>
+            </Button>           */}
+         
+
 
         <hr />
             {/*!!!WORK HERE!!!*/} 
