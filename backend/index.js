@@ -96,7 +96,7 @@ app.delete(`${PREFIX}/events/:eventId`, async (req, res) => {
             res.status(500).send({error: "Could not delete!", done: false});
             return;
         }
-        res.status(202),send({done: true});
+        res.status(202).send({done: true});
     } catch (err) {
         console.error(err);
         res.status(500).send({error: err});

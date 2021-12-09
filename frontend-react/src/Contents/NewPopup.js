@@ -13,6 +13,7 @@ export class NewEventPopup extends React.Component {
         super(props);
 
         this.handleClose = this.handleClose.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleClose() {
@@ -25,6 +26,12 @@ export class NewEventPopup extends React.Component {
         this.setState({});
     }
 
+    handleSubmit(event) {
+
+        const form = event.currentTarget;
+        console.dir(event.target[0].value);
+    }
+
     render() {
         // console.log("render");
         return (
@@ -34,12 +41,12 @@ export class NewEventPopup extends React.Component {
                 backdrop="static"
                 keyboard={false}>
 
-                <Modal.Header style={{ backgroundColor: bgColor }}>
-                    <Modal.Title>Neues Event</Modal.Title>
-                </Modal.Header>
+                <Form>
+                    <Modal.Header style={{ backgroundColor: bgColor }}>
+                        <Modal.Title>Neues Event</Modal.Title>
+                    </Modal.Header>
 
-                <Modal.Body style={{ backgroundColor: bgColor }}>
-                    <Form>
+                    <Modal.Body style={{ backgroundColor: bgColor }}>
                         <Form.Group className="mb-3" controlId="inputEventTitle" style={{ backgroundColor: bgColor }}>
                             <Form.Label>Titel</Form.Label>
                             <Form.Control type="text" style={{ backgroundColor: bgColor, color: txtColor }} placeholder="Mega wichtiges Event!" />
@@ -71,17 +78,17 @@ export class NewEventPopup extends React.Component {
 
                         </Form>
 
-                    </Form>
-                </Modal.Body>
+                    </Modal.Body>
 
-                <Modal.Footer style={{ backgroundColor: bgColor }}>
-                    <Button variant="secondary" onClick={this.handleClose}>
-                        Abbrechen
-                    </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                        Speichern
-                    </Button>
-                </Modal.Footer>
+                    <Modal.Footer style={{ backgroundColor: bgColor }}>
+                        <Button variant="secondary" onClick={this.handleClose}>
+                            Abbrechen
+                        </Button>
+                        <Button variant="primary" onClick={this.handleSubmit}>
+                            Speichern
+                        </Button>
+                    </Modal.Footer>
+                </Form>
             </Modal>
         );
     }
@@ -97,7 +104,7 @@ export class DeleteAllPopup extends React.Component {
         ModalContext.deleteAllEvents = false;
         this.setState({});
     }
-    
+
     componentDidMount() {
         this.setState({});
     }
@@ -106,28 +113,28 @@ export class DeleteAllPopup extends React.Component {
     render() {
         return (
             <Modal
-            show={ModalContext.deleteAllEvents}
-            onHide={this.handleClose}
-            backdrop="static"
-            keyboard={false}>
-            <Modal.Header style={{ backgroundColor: bgColor }}>
-                <Modal.Title>Alle Events löschen?</Modal.Title>
-            </Modal.Header>
+                show={ModalContext.deleteAllEvents}
+                onHide={this.handleClose}
+                backdrop="static"
+                keyboard={false}>
+                <Modal.Header style={{ backgroundColor: bgColor }}>
+                    <Modal.Title>Alle Events löschen?</Modal.Title>
+                </Modal.Header>
 
-            <Modal.Body style={{ backgroundColor: bgColor }}>
-                <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher wirklich ALLE Events löschen?
-                    <br></br><br></br>
-                    Rückgängig is nich! </h4>
-            </Modal.Body>
-            <Modal.Footer style={{ backgroundColor: bgColor }}>
-                <Button variant="success" onClick={this.handleClose}>
-                    Ok ne
-                </Button>
-                <Button variant="danger" onClick={this.handleClose}>
-                    *nuke it*
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                <Modal.Body style={{ backgroundColor: bgColor }}>
+                    <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher wirklich ALLE Events löschen?
+                        <br></br><br></br>
+                        Rückgängig is nich! </h4>
+                </Modal.Body>
+                <Modal.Footer style={{ backgroundColor: bgColor }}>
+                    <Button variant="success" onClick={this.handleClose}>
+                        Ok ne
+                    </Button>
+                    <Button variant="danger" onClick={this.handleClose}>
+                        *nuke it*
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }

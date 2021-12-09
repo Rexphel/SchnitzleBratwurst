@@ -75,7 +75,6 @@ class Content extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Hello, sdfasdg yo");
         fetch("http://localhost:8000/api/events")
             .then(res => res.json())
             .then(result => {
