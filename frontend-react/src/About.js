@@ -7,24 +7,52 @@ import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
 //import process from NodeJS
 
-const NODE_VERSION = process.version
-const EXPRESS_VERSION = "---"
-const REACT_VERSION = React.version
-const MONGODB_VERSION = "---"
+const Theme = 'dark'
+export default class About extends React.Component {
+    
+    constructor(props) {
+        super(props);
 
-export default function About() {
-
-    const [Theme, setTheme] = useState('dark'); //Ich weiß nicht was ich mache aber es klappt iwi XD Philip Button ist nur was wierd. 
-    const toggleTheme = () => {
-        if (Theme === 'dark'){
-            setTheme('light');
+        this.state = {
+            isLoaded: false,
+            error: null,
+            versions: []
         }
-        
-        else{
-            setTheme('dark');
-        }  
-        
     }
+
+    componentDidMount() {
+        console.log("Pulling Versions...")
+        fetch("http://localhost:8000/api/version")
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, versions: result});
+            }
+        }).catch(err => console.error(`Wasn't able to automatically fetch versions. Err: ${err}`));
+    }
+
+
+
+    render() {
+
+    const NODE_VERSION = this.state.versions.node;
+    const EXPRESS_VERSION = this.state.versions.express;
+    const REACT_VERSION = (`v${React.version}`)
+    const MONGODB_VERSION = this.state.versions.mongo;
+    
+    // const [Theme, setTheme] = State('dark'); //Ich weiß nicht was ich mache aber es klappt iwi XD Philip Button ist nur was wierd. 
+    // const toggleTheme = () => {
+    //     if (Theme === 'dark'){
+    //         setTheme('light');
+    //     }
+        
+    //     else{
+    //         setTheme('dark');
+    //     }  
+        
+    // }
 
     return (
         <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
@@ -34,9 +62,9 @@ export default function About() {
             <h1>Simple Event Manager  Ver.&nbsp;{software_version} </h1>
 
             &nbsp;&nbsp;
-            <Button variant="primary" onClick={toggleTheme}>
+            {/* <Button variant="primary" onClick={toggleTheme}>
                 Toggle Theme
-            </Button>
+            </Button> */}
 
             <br />
             <h2>Made by </h2>
@@ -48,8 +76,8 @@ export default function About() {
             <h4> ReactJS Version: {REACT_VERSION}</h4>
             <h4> MongoDB Version: {MONGODB_VERSION}</h4>
 
-            {/* <FetchComponent /> */}
         </div>
         </ThemeProvider>
     );
+}
 }
