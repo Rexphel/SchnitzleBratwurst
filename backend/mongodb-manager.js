@@ -31,6 +31,9 @@ async function addEvent(collection, title, message, date, duration) {
 }
 
 async function deleteEvent(collection, id) {
+    if (id.length != 24) {
+        throw "ID hast to be 24 characters long";
+    }
     debug(`Event ${id} deleted`)
     return await collection.deleteOne({_id: new ObjectId(id)});
 }
