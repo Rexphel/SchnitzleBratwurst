@@ -29,6 +29,7 @@ var event_title = "Mega wichtiges Event";
 var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiuiuherg o gg glwejgöosuhas.lsakngiuesröbl-aiskngöioeli-fjwsgoiäeLAFJKn weg8923o0wrq9ij43n29oö rihf384woerisjf knmwpeasdk,mxc we8 9ü   23o9öwiedkhjk";
 var event_duration = "SS:MM";
 var event_date = "TT.MM.JJJJ";
+var Theme = 'dark';
 
 class Content extends React.Component {
 
@@ -100,6 +101,15 @@ class Content extends React.Component {
         this.setState({});
     }
 
+    toggleTheme(){
+        if (Theme === 'dark'){
+            Theme = 'light';
+        }  
+        else{
+            Theme = 'dark';
+        } 
+        this.setState({});
+    
 
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
@@ -141,7 +151,7 @@ class Content extends React.Component {
         return (
             //Show x Event Cards
 
-            <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
                 <GlobalStyles />
                 <div className="mt-3">
 
@@ -152,6 +162,10 @@ class Content extends React.Component {
                     &nbsp;&nbsp;
                     <Button variant="primary" onClick={this.handleShowDeleteAllEvents.bind(this)}>
                         Alle Events löschen
+                    </Button>
+                    &nbsp;&nbsp;
+                    <Button variant="primary" onClick={this.toggleTheme.bind(this)}>
+                        Toggle Theme
                     </Button>
                     {/* &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_event_canvas}>
