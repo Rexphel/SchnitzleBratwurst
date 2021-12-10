@@ -1,9 +1,7 @@
 import React from 'react';
-import { Button, Card, Offcanvas, Modal, Form, Alert } from "react-bootstrap";
+import { Button, Card, Modal, Form, Alert } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
-import { ThemeProvider } from '../../node_modules/styled-components/';
-import { lightTheme, darkTheme } from '../Styling/Theme';
-import { GlobalStyles } from '../Styling/Global';
+import { darkTheme } from '../Styling/Theme';
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -78,7 +76,7 @@ class EventCard extends React.Component {
         // console.log(`Date: ${date} == ${oldDate}: ${date == oldDate}`);
         // console.log(`Time: ${time} == ${oldTime}: ${time == oldTime}`);
         // console.log(`Duration: ${duration} == ${oldDuration}: ${duration == oldDuration}`);
-        if (title == oldTitle && message == oldMessage && date == oldDate && time == oldTime && duration == oldDuration) {
+        if (title === oldTitle && message === oldMessage && date === oldDate && time === oldTime && duration === oldDuration) {
             this.setState({showError: true});
             return;
         }
@@ -118,10 +116,12 @@ class EventCard extends React.Component {
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
         var event_description;
+        // eslint-disable-next-line
         var long_event_description;
-        var id = this.props.id;
+        // var id = this.props.id;
         if (this.props.event_description.length > event_description_on_card_length) {
             event_description = this.props.event_description.substring(0, event_description_on_card_length) + "..."
+            // eslint-disable-next-line
             long_event_description = true;
         } else {
             event_description = this.props.event_description

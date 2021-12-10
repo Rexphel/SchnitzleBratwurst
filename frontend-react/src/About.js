@@ -1,7 +1,5 @@
 import { software_version } from './App';
-import { useState } from "react";
 import React from 'react';
-import { Button } from "react-bootstrap";
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';

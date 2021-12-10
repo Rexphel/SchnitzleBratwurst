@@ -19,7 +19,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {text: "Initial Text"};
-        this.refresh = this.refresh;
+        this.refresh = this.refresh.bind(this);
     }
 
     refresh = (text) => {this.setState({text}); console.log("blyad")};

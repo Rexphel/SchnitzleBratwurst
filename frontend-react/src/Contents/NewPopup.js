@@ -64,8 +64,6 @@ export class NewEventPopup extends React.Component {
         let newDate = dateArray[2] + "." + dateArray[1] + "." + dateArray[0];
         let dateTime = time + "-" + newDate;
 
-        let s = `${title}\n${message}\n${dateTime}\n${duration}`;
-
         let data = {
             title: title,
             message: message,
