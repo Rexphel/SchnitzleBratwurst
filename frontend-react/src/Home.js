@@ -1,15 +1,11 @@
-import { useState } from "react";
 import React from 'react';
 // eslint-disable-next-line
-import { Button, Modal, Form, Offcanvas } from "react-bootstrap";
-import { BsExclamationTriangle } from "react-icons/bs";
-import { Row, Col, Container } from 'react-bootstrap';
+import { Button, Card} from "react-bootstrap";
+
 import EventCard from './Contents/Card';
 import LoadingCard from './Contents/LoadingCard';
-//import { popup_new_event, popup_delete_event } from './Contents/Popups'
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
-//import EventCanvas from './Contents/Offcanvas';
-//import { DateTime } from 'react-datetime-bootstrap';
+import EventCanvas from './Contents/EventCanvas';
+
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
@@ -24,55 +20,28 @@ export const ModalContext = {
     eventCanvas: false
 };
 
-const API = "localhost:8000/api/events"
-const bgColor = darkTheme.body
-const txtColor = darkTheme.text
-var event_title = "Mega wichtiges Event";
-var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiuiuherg o gg glwejgöosuhas.lsakngiuesröbl-aiskngöioeli-fjwsgoiäeLAFJKn weg8923o0wrq9ij43n29oö rihf384woerisjf knmwpeasdk,mxc we8 9ü   23o9öwiedkhjk";
-var event_duration = "SS:MM";
-var event_date = "TT.MM.JJJJ";
 var Theme = 'dark';
 
 class Content extends React.Component {
 
+
+
     constructor(props) {
         super(props);
 
-        this.state = {
-            isLoaded: false,
-            error: null,
-            events: []
-        }
-
-        // const new_event = useState(false);
-        // this.show_new_event = new_event[0];
-        // this.setShow_new_event = new_event[1];
-        // // const [show_new_event, setShow_new_event] = useState(false);
-        // this.handleClose_new_event = () => this.setShow_new_event(false);
-        // this.handleShow_new_event = () => this.setShow_new_event(true);
-        // this.handleClose_new_event = () => this.setState({show_new_event: false});
-        // this.handleShow_new_event = () => this.setState({show_new_event: true});
-
-        // const [show_edit_event, setShow_edit_event] = useState(false);
-        // const handleClose_edit_event = () => setShow_edit_event(false);
-        // const handleShow_edit_event = () => setShow_edit_event(true);
-
-        // const [show_delete_event, setShow_delete_event] = useState(false);
-        // const handleClose_delete_event = () => setShow_delete_event(false);
-        // const handleShow_delete_event = () => setShow_delete_event(true);
-
-        // const delete_all_events = useState(false);
-        // this.show_delete_all_events = delete_all_events[0];
-        // this.setShow_delete_all_events = delete_all_events[1];
-        // // const [show_delete_all_events, setShow_delete_all_events] = useState(false);
-        // this.handleClose_delete_all_events = () => this.setShow_delete_all_events(false);
-        // this.handleShow_delete_all_events = () => this.setShow_delete_all_events(true);
-        // this.handleClose_delete_all_events = () => this.setState({show_delete_all_events: false});
-        // this.handleShow_delete_all_events = () => this.setState({show_delete_all_events: true});
-
-        // const [show_event_canvas, setShow_event_canvas] = useState(false);
-        // const handleClose_event_canvas = () => setShow_event_canvas(false);
-        // const handleShow_event_canvas = () => setShow_event_canvas(true);
+            this.state = {
+                isLoaded: false,
+                error: null,
+                events: [],
+                
+            };
+        
+   
+            this.reRender = this.reRender.bind(this)
+    }
+    
+    reRender(value) {
+        this.setState({value});
     }
 
     componentDidMount() {
@@ -101,11 +70,12 @@ class Content extends React.Component {
             Theme = 'dark';
         } 
         this.setState({});
+        console.log(Theme)
     }
 
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
-        this.setState({});
+     this.setState({});
     }
 
     render() {
@@ -116,7 +86,7 @@ class Content extends React.Component {
             if (!this.state.error) {
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
-                    this.items.push(<EventCard id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
+                    this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
                 }
             }
         }  else {
@@ -130,7 +100,7 @@ class Content extends React.Component {
         
         return (
             //Show x Event Cards
-
+            
             <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
                 <GlobalStyles />
                 <div className="mt-3">
@@ -170,9 +140,11 @@ class Content extends React.Component {
                         {this.items}   
                     </div> 
 
-                    <NewEventPopup/>
-
+                    <NewEventPopup />
+                    
                     <>
+                    <EventCanvas />
+                    <DeleteAllPopup />
                     {/*-----EDIT EVENT POPUP-----*/}
                     {/* <Modal
                         show={show_edit_event}
@@ -258,7 +230,7 @@ class Content extends React.Component {
 
                     {/*-----DELETE ALL EVENTS POPUP-----*/}
 
-                    <DeleteAllPopup />
+                   
 
 {/* 
                     <Offcanvas show={show_event_canvas} onHide={handleClose_event_canvas} style={{ backgroundColor: bgColor }} >
@@ -273,33 +245,11 @@ class Content extends React.Component {
                     </Offcanvas> */}
                     </>
                 </div>
+                
+
             </ThemeProvider>
         );
     }
-
-}
-
-function fetchCardInfo() {
-
-    //-> Fetch Event Count
-    //-> Fetch all Event Information
-    //-> Show Cards with Event Info
-
-}
-
-function fetchCanvasInfo() {
-
-    //-> Fetch Event
-    //-> Show Canvas with Event Information
-
-}
-
-function EditEvent() {
-
-    //-> Fetch Event
-    //-> Show Edit Modal with current Event Information
-    //-> Let user Edit Modal
-    //-> Save updated Event
 
 }
 

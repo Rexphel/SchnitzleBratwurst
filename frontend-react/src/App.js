@@ -8,9 +8,9 @@ import { BrowserRouter as Router,
 } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
-
 const software_version = "2021.12.6.9"
 const event_description_on_card_length = 100
+
 
 export default function App() {
     

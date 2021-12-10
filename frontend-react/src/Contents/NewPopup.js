@@ -34,7 +34,7 @@ export class NewEventPopup extends React.Component {
                 backdrop="static"
                 keyboard={false}>
 
-                <Modal.Header style={{ backgroundColor: bgColor }}>
+                <Modal.Header style={{ backgroundColor: bgColor, color: txtColor}}>
                     <Modal.Title>Neues Event</Modal.Title>
                 </Modal.Header>
 
