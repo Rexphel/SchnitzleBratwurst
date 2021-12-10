@@ -109,8 +109,8 @@ class Content extends React.Component {
             Theme = 'dark';
         } 
         this.setState({});
+    }
     
-
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
         this.setState({});
