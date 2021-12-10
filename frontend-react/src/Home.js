@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
 import { NewEventPopup, DeleteAllPopup } from "./Contents/NewPopup";
-
+import {WeatherGUI} from "./Contents/Weather"
 
 export const ModalContext = {
     newEvent: false,
@@ -180,10 +180,10 @@ class Content extends React.Component {
             </Button>           */}
 
 
-
                     <hr />
                     {/*!!!WORK HERE!!!*/}
                     {/*   class="m-auto d-flex justify-content-between"*/}
+
 
                     <div class="d-flex justify-content-center flex-wrap" >
                         {this.items}
@@ -280,6 +280,7 @@ class Content extends React.Component {
                         <DeleteAllPopup />
 
                         {/* 
+
                     <Offcanvas show={show_event_canvas} onHide={handleClose_event_canvas} style={{ backgroundColor: bgColor }} >
                         <Offcanvas.Header closeButton closeVariant='white'>
                             <Offcanvas.Title><h3>{event_title}</h3></Offcanvas.Title>
@@ -290,7 +291,10 @@ class Content extends React.Component {
                             {event_description}
                         </Offcanvas.Body>
                     </Offcanvas> */}
+                    
                     </>
+                    <hr />
+                    <WeatherGUI />
                 </div>
             </ThemeProvider>
         );
