@@ -1,39 +1,68 @@
 import React from 'react';
 import { Button, Card} from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
-import EventCanvas from './EventCanvas';
-import { ModalContext, reRender } from '../Home';
-var text = ''
+import { ModalContext } from '../Home';
 var _id = ''
+var _title = ''
+var _description = ''
+var _date = ''
+var _time = ''
+var _duration = ''
+
+
+
 export default class EventCard extends React.Component {
 
     constructor(props) {
         super(props)
         this.props = props;
-        this.state = {id: this.props.id};
+        this.state = {
+            isLoaded: false,
+            error: null,
+            event: [],
+            id: this.props.id
+        };
         this.handleOpen = this.handleShowEventCanvas.bind(this);
+        this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
     }
 
-    
+    handleShowDeleteEvent() {
+
+        ModalContext.deleteEvent = true
+        this.props.reRender(this.state)
+
+    }
+
+
     handleShowEventCanvas() {
-    
+        fetch(`http://localhost:8000/api/events/${_id}`)
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, event: result});
+                }
+            }).catch(err => console.error(err));
         ModalContext.eventCanvas = true;
-        console.log(`${ModalContext.eventCanvas.valueOf()}`)
         this.props.reRender(this.state, 'true')
         
     }
 
-    deleteThisEvent() {
-        fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
-            .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
-    }
+    // deleteThisEvent() {
+    //     fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
+    //         .then(res => res.json())
+    //         .then(res => console.log(res))
+    //         .catch(err => console.error(err));
+    // }
 
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
    
-        _id = this.props.id;
+        _id = this.state.id;
+
+
+
         this.title = [];
         this.description = [];
         
@@ -70,7 +99,7 @@ export default class EventCard extends React.Component {
                     <Card.Footer>
                         <Button variant="primary" size='sm'>Bearbeiten</Button>
                         &nbsp;&nbsp;
-                        <Button variant="danger" size='sm' onClick={this.deleteThisEvent.bind(this)}>Löschen</Button>
+                        <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
                     </Card.Footer>
                 </Card>
             </div>
@@ -79,4 +108,4 @@ export default class EventCard extends React.Component {
     }
 
 }
-export { _id as _id };
+export { _id as _id, _title as _title, _description as _description, _date as _date, _time as _time, _duration as _duration };

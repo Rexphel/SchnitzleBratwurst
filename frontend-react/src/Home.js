@@ -9,7 +9,7 @@ import EventCanvas from './Contents/EventCanvas';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
-import { NewEventPopup, DeleteAllPopup } from "./Contents/NewPopup";
+import { NewEventPopup, DeleteEventPopup, DeleteAllEventsPopup } from "./Contents/NewPopup";
 
 
 export const ModalContext = {
@@ -40,7 +40,7 @@ class Content extends React.Component {
             this.reRender = this.reRender.bind(this)
     }
     
-    reRender(value, shouldfetch = new Boolean('false') , type) { //value always "this.state", shouldfetch: Bool -> reFetch?, type: fetchType
+    reRender(value, shouldfetch = new Boolean('false') , fetch_type) { //value always "this.state", shouldfetch: Bool -> reFetch?, fetch_type: fetchType
         if (shouldfetch === 'true') {
             fetch("http://localhost:8000/api/events")
             .then(res => res.json())
@@ -73,7 +73,7 @@ class Content extends React.Component {
 
     handleShowNewEvent() {
         ModalContext.newEvent = true;
-        this.setState({});
+        this.reRender(this.state);
     }
 
     toggleTheme(){
@@ -83,13 +83,13 @@ class Content extends React.Component {
         else{
             Theme = 'dark';
         } 
-        this.setState({});
+        this.reRender(this.state);
         console.log(Theme)
     }
 
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
-     this.setState({});
+        this.reRender(this.state);
     }
 
     render() {
@@ -100,7 +100,7 @@ class Content extends React.Component {
             if (!this.state.error) {
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
-                    this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
+                    this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_date={datetime[1]} event_time={datetime[0]} event_duration={event.duration} />);
                 }
             }
         }  else {
@@ -155,10 +155,9 @@ class Content extends React.Component {
                     </div> 
 
                     <NewEventPopup />
-                    
-                    <>
+                    <DeleteEventPopup />
+                    <DeleteAllEventsPopup />
                     <EventCanvas />
-                    <DeleteAllPopup />
                     {/*-----EDIT EVENT POPUP-----*/}
                     {/* <Modal
                         show={show_edit_event}
@@ -257,7 +256,7 @@ class Content extends React.Component {
                             {event_description}
                         </Offcanvas.Body>
                     </Offcanvas> */}
-                    </>
+                    
                 </div>
                 
 

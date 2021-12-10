@@ -1,4 +1,4 @@
-import { ModalContext } from '../Home';
+import { ModalContext, } from '../Home';
 import React from 'react';
 import { Button, Modal, Form, } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
@@ -87,7 +87,61 @@ export class NewEventPopup extends React.Component {
     }
 }
 
-export class DeleteAllPopup extends React.Component {
+export class DeleteEventPopup extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleClose = this.handleClose.bind(this);
+    }
+    
+    handleClose() {
+        ModalContext.deleteEvent = false;
+        this.setState({});
+    }
+
+    componentDidMount() {
+        this.setState({});
+    }
+
+    deleteEvent() {
+        fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
+        this.props.reRender(this.state, 'true')
+    }
+
+    render() {
+        console.log("render");
+        return (
+            <Modal
+                show={ModalContext.deleteEvent}
+                onHide={this.handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: bgColor }}>
+                    <Modal.Title>Event löschen?</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body style={{ backgroundColor: bgColor }}>
+                    <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher löschen? </h4>
+                </Modal.Body>
+                <Modal.Footer style={{ backgroundColor: bgColor }}>
+                    <Button variant="success" onClick={this.handleClose}>
+                        Doch nich!
+                    </Button>
+                    <Button variant="danger" onClick={this.handleClose}>
+                        Jaaa!
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+}
+
+export class DeleteAllEventsPopup extends React.Component {
     constructor(props) {
         super(props);
 
