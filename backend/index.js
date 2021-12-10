@@ -103,6 +103,21 @@ app.delete(`${PREFIX}/events/:eventId`, async (req, res) => {
     }
 });
 
+app.delete(`${PREFIX}/allevents`, async (req, res) => {
+    try {
+        debug_req(req);
+        if (!mongo.isConnected()) {
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
+            return;
+        }
+        const result = await mongoManager.drop(mongo.getCollection());
+        res.status(202).send({done: result});
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({error: err});
+    }
+});
+
 app.put(`${PREFIX}/events/:eventId`, async (req, res) => {
     try {
         debug_req(req);

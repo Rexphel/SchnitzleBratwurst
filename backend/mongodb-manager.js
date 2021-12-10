@@ -81,4 +81,18 @@ async function updateEvent(collection, id, update) {
     // }
 }
 
-module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById, getEventCount, isElementInCollection};
+/*
+  _____          _   _  _____ ______ _____  _ 
+ |  __ \   /\   | \ | |/ ____|  ____|  __ \| |
+ | |  | | /  \  |  \| | |  __| |__  | |__) | |
+ | |  | |/ /\ \ | . ` | | |_ |  __| |  _  /| |
+ | |__| / ____ \| |\  | |__| | |____| | \ \|_|
+ |_____/_/    \_\_| \_|\_____|______|_|  \_(_)
+
+ You (should) know why...
+*/
+async function drop(collection) {
+    return await collection.drop();
+}
+
+module.exports = {getAllElements, addEvent, deleteEvent, updateEvent, getElementById, getEventCount, isElementInCollection, drop};
