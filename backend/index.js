@@ -68,8 +68,8 @@ app.post(`${PREFIX}/events`, async (req, res) => {
         }
         const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
         const id = result.insertedId;
-        res.set("Location", `${PREFIX}/events/${id}`);
-        res.status(201).end();
+        // res.set("Location", `${PREFIX}/events/${id}`);
+        res.status(201).send({id: id});
     } catch (err) {
         console.error(err);
         res.status(500).send({error: err});
