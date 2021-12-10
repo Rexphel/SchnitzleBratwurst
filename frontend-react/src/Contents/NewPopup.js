@@ -26,7 +26,7 @@ export class NewEventPopup extends React.Component {
     }
 
     render() {
-        // console.log("render");
+        console.log("render");
         return (
             <Modal
                 show={ModalContext.newEvent}
@@ -34,7 +34,7 @@ export class NewEventPopup extends React.Component {
                 backdrop="static"
                 keyboard={false}>
 
-                <Modal.Header style={{ backgroundColor: bgColor, color: txtColor}}>
+                <Modal.Header style={{ backgroundColor: bgColor }}>
                     <Modal.Title>Neues Event</Modal.Title>
                 </Modal.Header>
 
