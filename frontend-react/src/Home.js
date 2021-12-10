@@ -1,15 +1,8 @@
-import { useState } from "react";
 import React from 'react';
 // eslint-disable-next-line
 import { Button, Modal, Form, Offcanvas } from "react-bootstrap";
-import { BsExclamationTriangle } from "react-icons/bs";
-import { Row, Col, Container } from 'react-bootstrap';
 import EventCard from './Contents/Card';
 import LoadingCard from './Contents/LoadingCard';
-//import { popup_new_event, popup_delete_event } from './Contents/Popups'
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
-//import EventCanvas from './Contents/Offcanvas';
-//import { DateTime } from 'react-datetime-bootstrap';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
@@ -24,6 +17,11 @@ export const ModalContext = {
     eventCanvas: false
 };
 
+// export function refreshMain(text) {
+//     console.info("refresh amkl");
+//     this.setState({ text: Math.random() });
+// }
+
 const API = "localhost:8000/api/events"
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -36,12 +34,17 @@ class Content extends React.Component {
 
     constructor(props) {
         super(props);
+        this.props = props;
 
         this.state = {
             isLoaded: false,
             error: null,
-            events: []
+            events: [],
+            text: "Initial Text"
         }
+
+        // refreshMain = refreshMain.bind(this);
+        // this.updateText1 = this.updateText1.bind(this);
 
         // const new_event = useState(false);
         // this.show_new_event = new_event[0];
@@ -74,16 +77,22 @@ class Content extends React.Component {
         // const handleShow_event_canvas = () => setShow_event_canvas(true);
     }
 
-    componentDidMount() {
+    makeApiCall() {
+        // console.log("Api Call");
         fetch("http://localhost:8000/api/events")
             .then(res => res.json())
             .then(result => {
                 if (result.error)
-                    this.setState({isLoaded: true, error: result.error});
+                    this.setState({ isLoaded: true, error: result.error });
                 else {
-                    this.setState({isLoaded: true, events: result});
+                    this.setState({ isLoaded: true, events: result });
                 }
             }).catch(err => console.error(err));
+    }
+
+    componentDidMount() {
+        this.makeApiCall();
+        // console.log("Mounted");
     }
 
     handleShowNewEvent() {
@@ -91,33 +100,44 @@ class Content extends React.Component {
         this.setState({});
     }
 
-   
 
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
         this.setState({});
     }
 
+    // updateText1 = (text) => {
+    //     // window.location.reload(false);
+    //     // fetch(setTimeout(() => window.location.reload(false), 500));
+    //     new Promise((resolve) => setTimeout(resolve, 500))
+    //         .then(() => {
+    //             // window.location.reload(false);
+    //             this.setState({});
+    //         })
+    // }
+
     render() {
-      
-       //Show x Event Cards
-    this.items = []
+        // console.log("Rendered")
+        //Show x Event Cards
+        this.items = []
         if (this.state.isLoaded) {
+            // console.log("isLoaded");
             if (!this.state.error) {
+                // console.log("No Error");
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
-                    this.items.push(<EventCard id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
+                    this.items.push(<EventCard id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} event_time={datetime[0]}/>);
                 }
             }
-        }  else {
+        } else {
             this.items.push(<LoadingCard />);
             this.items.push(<LoadingCard />);
             this.items.push(<LoadingCard />);
             this.items.push(<LoadingCard />);
-        }  
+        }
 
-        
-        
+
+
         return (
             //Show x Event Cards
 
@@ -145,22 +165,22 @@ class Content extends React.Component {
             <Button variant="secondary" onClick={handleShow_edit_event}>
                 Testknopp3
             </Button>           */}
-         
 
 
-        <hr />
-            {/*!!!WORK HERE!!!*/} 
-            {/*   class="m-auto d-flex justify-content-between"*/}
+
+                    <hr />
+                    {/*!!!WORK HERE!!!*/}
+                    {/*   class="m-auto d-flex justify-content-between"*/}
 
                     <div class="d-flex justify-content-center flex-wrap" >
-                        {this.items}   
-                    </div> 
+                        {this.items}
+                    </div>
 
-                    <NewEventPopup/>
+                    <NewEventPopup refresh={() => {this.makeApiCall(); this.props.refresh()}} />
 
                     <>
-                    {/*-----EDIT EVENT POPUP-----*/}
-                    {/* <Modal
+                        {/*-----EDIT EVENT POPUP-----*/}
+                        {/* <Modal
                         show={show_edit_event}
                         onHide={handleClose_edit_event}
                         backdrop="static"
@@ -218,8 +238,8 @@ class Content extends React.Component {
                     </Modal> */}
 
 
-                    {/*-----DELETE EVENT POPUP-----*/}
-                    {/* <Modal
+                        {/*-----DELETE EVENT POPUP-----*/}
+                        {/* <Modal
                         show={show_delete_event}
                         onHide={handleClose_delete_event}
                         backdrop="static"
@@ -242,11 +262,11 @@ class Content extends React.Component {
                         </Modal.Footer>
                     </Modal> */}
 
-                    {/*-----DELETE ALL EVENTS POPUP-----*/}
+                        {/*-----DELETE ALL EVENTS POPUP-----*/}
 
-                    <DeleteAllPopup />
+                        <DeleteAllPopup />
 
-{/* 
+                        {/* 
                     <Offcanvas show={show_event_canvas} onHide={handleClose_event_canvas} style={{ backgroundColor: bgColor }} >
                         <Offcanvas.Header closeButton closeVariant='white'>
                             <Offcanvas.Title><h3>{event_title}</h3></Offcanvas.Title>

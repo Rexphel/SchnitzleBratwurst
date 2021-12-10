@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, Modal, Form, } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
 import { darkTheme } from '../Styling/Theme';
-import ReactDOM from 'react-dom';
 import { Alert } from 'react-bootstrap';
+// import { refreshMain } from '../Home';
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -13,6 +13,7 @@ export class NewEventPopup extends React.Component {
 
     constructor(props) {
         super(props);
+        this.props = props;
 
         this.state = {
             title: null,
@@ -63,11 +64,8 @@ export class NewEventPopup extends React.Component {
         let newDate = dateArray[2] + "." + dateArray[1] + "." + dateArray[0];
         let dateTime = time + "-" + newDate;
 
-        let s = `${title}\n${message}n${dateTime}\n${duration}`;
+        let s = `${title}\n${message}\n${dateTime}\n${duration}`;
 
-        // ReactDOM.render(<Alert variant="info" dismissible>{s}</Alert>,
-        //     document.getElementById("test123"));
-        alert(s);
         let data = {
             title: title,
             message: message,
@@ -82,6 +80,10 @@ export class NewEventPopup extends React.Component {
         .then(res => res.text())
         .then(txt => console.log(txt))
         .catch(err => console.error(err));
+
+
+        // refreshMain(Math.random());
+        this.props.refresh(Math.random());
         this.handleClose();
     }
 
@@ -92,7 +94,6 @@ export class NewEventPopup extends React.Component {
     handleDurationChange(event) { this.setState({ duration: event.target.value }); }
 
     render() {
-        // console.log("render");
         return (
             <Modal
                 show={ModalContext.newEvent}

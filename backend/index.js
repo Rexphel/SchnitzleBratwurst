@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoManager = require("./mongodb-manager");
 const mongo = require("./mongodb-client");
-const { debug_req } = require('./helper.js');
+const { debug_req, debug } = require('./helper.js');
 const fs = require("fs");
 
 const PORT = 8000;
@@ -159,6 +159,7 @@ app.get(`${PREFIX}/version`, async (req, res) => {
 });
 
 app.use((req, res, next) => {
+    debug(`${req.method} request on ${req.originalUrl} but nothing found (404)!`);
     res.status(404).send({error: "Nothing found here...", errorCode: 404});
 });
 
