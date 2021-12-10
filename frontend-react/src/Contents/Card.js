@@ -19,7 +19,7 @@ export default class EventCard extends React.Component {
     
         ModalContext.eventCanvas = true;
         console.log(`${ModalContext.eventCanvas.valueOf()}`)
-        this.props.reRender(this.state)
+        this.props.reRender(this.state, 'true')
         
     }
 

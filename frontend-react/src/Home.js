@@ -40,9 +40,23 @@ class Content extends React.Component {
             this.reRender = this.reRender.bind(this)
     }
     
-    reRender(value) {
+    reRender(value, shouldfetch = new Boolean('false') , type) { //value always "this.state", shouldfetch: Bool -> reFetch?, type: fetchType
+        if (shouldfetch === 'true') {
+            fetch("http://localhost:8000/api/events")
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, events: result});
+                    this.setState({value});
+                }
+            }).catch(err => console.error(err)); 
+    } else {
+        
         this.setState({value});
     }
+}   
 
     componentDidMount() {
         console.log("Hello, sdfasdg yo");
