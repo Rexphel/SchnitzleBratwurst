@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 const titles = ["Test Event", "My Event", "Birthday", "Christmas", "Easter", "Winter", "Your Event"];
-const descs = ["Hellio", "World", "I don't know what to write", "Do you hear me?", "Pls work"];
+const descs = ["Hellio", "World", "I don't know what to write", "Do you hear me?", "Pls work", "Hallo an alle die das lesen. In erster Linie möchte ich meine mutter grüßen und meine Eltern und mich selbst natürlich."];
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
