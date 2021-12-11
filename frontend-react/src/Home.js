@@ -1,6 +1,6 @@
 import React from 'react';
 // eslint-disable-next-line
-import { Button } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
 import EventCard from './Contents/Card';
 import EventCanvas from './Contents/EventCanvas';
 import LoadingCard from './Contents/LoadingCard';
@@ -141,6 +141,8 @@ export default class Content extends React.Component {
     //         })
     // }
 
+
+    
     render() {
         // console.log("Rendered")
         //Show x Event Cards
@@ -152,8 +154,9 @@ export default class Content extends React.Component {
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
                     this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_date={datetime[1]} event_time={datetime[0]} event_duration={event.duration} />);
-
+                    
                 }
+                this.items.push(<WeatherGUI />)
             }
         } else {
             this.items.push(<LoadingCard />);
@@ -170,19 +173,24 @@ export default class Content extends React.Component {
             <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
                 <GlobalStyles />
                 <div className="mt-3">
+                    <div class=' d-inline-flex'>    
+                        {/*-----BUTTONS-----*/}
+                        <Button variant="primary" onClick={this.handleShowNewEvent.bind(this)}>
+                            Neues Event
+                        </Button>
+                        &nbsp;&nbsp;
+                        <Button variant="primary" onClick={this.handleShowDeleteAllEvents.bind(this)}>
+                            Alle Events löschen
+                        </Button>
+                        &nbsp;&nbsp;
+                        <Button variant="primary" onClick={this.toggleTheme.bind(this)}>
+                            Toggle Theme
+                        </Button>
+                        &nbsp;&nbsp;
 
-                    {/*-----BUTTONS-----*/}
-                    <Button variant="primary" onClick={this.handleShowNewEvent.bind(this)}>
-                        Neues Event
-                    </Button>
-                    &nbsp;&nbsp;
-                    <Button variant="primary" onClick={this.handleShowDeleteAllEvents.bind(this)}>
-                        Alle Events löschen
-                    </Button>
-                    &nbsp;&nbsp;
-                    <Button variant="primary" onClick={this.toggleTheme.bind(this)}>
-                        Toggle Theme
-                    </Button>
+                      
+                    </div>
+                    
                     {/* &nbsp;&nbsp;
             <Button variant="secondary" onClick={handleShow_event_canvas}>
                 Testknopp
