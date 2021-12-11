@@ -1,17 +1,41 @@
 import React from 'react';
-import { Button, Card, Modal, Form, Alert } from "react-bootstrap";
+import { Button, Card} from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
-import { darkTheme } from '../Styling/Theme';
+import { ModalContext } from '../Home';
+var _id = ''
+var _title = ''
+var _description = ''
+var _date = ''
+var _time = ''
+var _duration = ''
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
 
-class EventCard extends React.Component {
+export default class EventCard extends React.Component {
 
     constructor(props) {
         super(props)
         this.props = props;
         this.state = {
+            isLoaded: false,
+            error: null,
+            event: [],
+            id: this.props.id
+        };
+        this.handleOpen = this.handleShowEventCanvas.bind(this);
+        this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
+    }
+
+    handleShowDeleteEvent() {
+        ModalContext.deleteEvent = true
+        this.props.reRender(this.state)
+
+    }
+
+
+    handleShowEventCanvas() {
+        //fetch(`http://localhost:8000/api/events/${_id}`)
             id: this.props.id,
             showEdit: false,
             showError: false,
@@ -38,13 +62,30 @@ class EventCard extends React.Component {
         this.realDate = this.splitted[2] + "-" + this.splitted[1] + "-" + this.splitted[0];
     }
 
-    deleteThisEvent() {
+    {/*deleteThisEvent() {
         fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
             .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
-    }
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, event: result});
+                }
+            }).catch(err => console.error(err));
+        ModalContext.eventCanvas = true;
+        this.props.reRender(this.state, 'true')
+        
+    */}
 
+    // deleteThisEvent() {
+    //     fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
+    //         .then(res => res.json())
+    //         .then(res => console.log(res))
+    //         .catch(err => console.error(err));
+    // }
+
+
+            
     editEventHandler() {
         this.setState({ showEdit: true });
     }
@@ -115,16 +156,26 @@ class EventCard extends React.Component {
 
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
-        var event_description;
-        // eslint-disable-next-line
-        var long_event_description;
-        // var id = this.props.id;
-        if (this.props.event_description.length > event_description_on_card_length) {
-            event_description = this.props.event_description.substring(0, event_description_on_card_length) + "..."
-            // eslint-disable-next-line
-            long_event_description = true;
+   
+        _id = this.state.id;
+
+
+
+        this.title = [];
+        this.description = [];
+        
+        if (this.props.event_title.length > 13) {
+            this.title.push(this.props.event_title.substring(0, 13) + "...")
         } else {
-            event_description = this.props.event_description
+            this.title.push(this.props.event_title)
+
+        }
+
+        if (this.props.event_description.length > event_description_on_card_length) {
+            this.description.push(this.props.event_description.substring(0, event_description_on_card_length) + "...")
+            this.description.push(<Button variant='link' size='sm' onClick={this.handleShowEventCanvas.bind(this)} >Weiterlesen</Button>)
+        } else {
+            this.description.push(this.props.event_description)
         }
         return (
             <>
@@ -202,6 +253,16 @@ class EventCard extends React.Component {
                                 {event_description}
                                 <Button variant='link' size='sm'>Weiterlesen</Button>
 
+            <div class=" m-1 ">
+                <Card border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem'}}>
+                    <Card.Header >
+                        <Card.Title>{this.title}</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                        <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
+                        <Card.Text>
+                           {this.description}
+                    
                             </Card.Text>
                         </Card.Body>
                         <Card.Footer>
@@ -216,43 +277,5 @@ class EventCard extends React.Component {
         )
     }
 
-    // render() { //event_title="" event_duration="" event_date="" event_description=""
-
-    //     var event_description;
-    //     var long_event_description;
-    //     var id = this.props.id;
-    //     if (this.props.event_description.length > event_description_on_card_length) {
-    //         event_description = this.props.event_description.substring(0, event_description_on_card_length) + "..."
-    //         long_event_description = true;
-    //     } else {
-    //         event_description = this.props.event_description
-    //     }
-    //     return (
-    //         <ThemeProvider theme={darkTheme}>
-
-    //             <Card border="primary" bg='dark' text='light' style={{ width: '16rem' }}>
-    //                 <Card.Header>
-    //                     <Card.Title>{this.props.event_title}</Card.Title>
-    //                 </Card.Header>
-    //                 <Card.Body>
-    //                     <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
-    //                     <Card.Text>
-    //                         {event_description}
-    //                         <Button variant='link' size='sm'>Weiterlesen</Button>
-
-
-    //                     </Card.Text>
-
-    //                     <Button variant="primary" size='sm'>Bearbeiten</Button>
-    //                     &nbsp;&nbsp;
-    //                     <Button variant="danger" size='sm'>Löschen</Button>
-    //                 </Card.Body>
-    //             </Card>
-    //         </ThemeProvider>
-    //     )
-    // }
-
 }
-
-
-export default EventCard;
+export { _id as _id, _title as _title, _description as _description, _date as _date, _time as _time, _duration as _duration };
