@@ -28,6 +28,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^4.2.1",
+    "node-fetch": "^3.1.0",
     "react-datetime-bootstrap": "^1.4.7",
     "react-icons": "^4.3.1",
     "styled-components": "^5.3.3"
