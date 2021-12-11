@@ -1,8 +1,5 @@
 import React from 'react';
 // eslint-disable-next-line
-
-
-
 import { Button } from "react-bootstrap";
 import EventCard from './Contents/Card';
 import EventCanvas from './Contents/EventCanvas';
@@ -73,8 +70,7 @@ export default class Content extends React.Component {
         // const [show_event_canvas, setShow_event_canvas] = useState(false);
         // const handleClose_event_canvas = () => setShow_event_canvas(false);
         // const handleShow_event_canvas = () => setShow_event_canvas(true);
-    
-    
+  
     reRender(value, shouldfetch = new Boolean('false') , fetch_type) { //value always "this.state", shouldfetch: Bool -> reFetch?, fetch_type: fetchType
         if (shouldfetch === 'true') {
             fetch("http://localhost:8000/api/events")
@@ -327,4 +323,3 @@ export default class Content extends React.Component {
     }
 
 }
-

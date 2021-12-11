@@ -15,6 +15,7 @@ const txtColor = darkTheme.text
 
 export default class EventCard extends React.Component {
 
+
     constructor(props) {
         super(props)
         this.props = props;
@@ -173,7 +174,6 @@ export default class EventCard extends React.Component {
 
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
-   
         _id = this.state.id;
 
 
@@ -191,6 +191,7 @@ export default class EventCard extends React.Component {
         if (this.props.event_description.length > event_description_on_card_length) {
             this.description.push(this.props.event_description.substring(0, event_description_on_card_length) + "...")
             this.description.push(<Button variant='link' size='sm' onClick={this.handleShowEventCanvas.bind(this)} >Weiterlesen</Button>)
+
         } else {
             this.description.push(this.props.event_description)
         }
