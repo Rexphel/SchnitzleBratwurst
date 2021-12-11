@@ -156,7 +156,6 @@ export default class Content extends React.Component {
                     this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_date={datetime[1]} event_time={datetime[0]} event_duration={event.duration} />);
                     
                 }
-                this.items.push(<WeatherGUI />)
             }
         } else {
             this.items.push(<LoadingCard />);
