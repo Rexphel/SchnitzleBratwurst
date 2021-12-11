@@ -1,14 +1,8 @@
 import React from 'react';
-import { Button, Card, Modal , Alert, Form } from "react-bootstrap";
+import { Button, Card, Modal, Alert, Form } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
-import { ModalContext } from '../Home';
+import { ModalContext, CurrentID } from '../Home';
 import { darkTheme } from '../Styling/Theme';
-var _id = ''
-var _title = ''
-var _description = ''
-var _date = ''
-var _time = ''
-var _duration = ''
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -32,7 +26,7 @@ export default class EventCard extends React.Component {
             time: this.props.event_time,
             duration: this.props.event_duration
         };
-        
+
         this.handleOpen = this.handleShowEventCanvas.bind(this);
         this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
         this.editEventHandler = this.editEventHandler.bind(this);
@@ -43,7 +37,7 @@ export default class EventCard extends React.Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleDurationChange = this.handleDurationChange.bind(this);
-        
+
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.newDate = this.props.event_date; // 31.05.2002
@@ -62,23 +56,26 @@ export default class EventCard extends React.Component {
     handleShowEventCanvas() {
         //fetch(`http://localhost:8000/api/events/${_id}`)
         ModalContext.eventCanvas = true;
+        CurrentID.id = this.state.id;
         this.props.reRender(this.state, 'true')
-
+        // updateThis(Math.random() * 100);
+        CurrentID.reFetch();
+        // console.log(CurrentID);
     }
 
-        /*deleteThisEvent() {
-        fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
-            .then(res => res.json())
-            .then(result => {
-                if (result.error)
-                    this.setState({isLoaded: true, error: result.error});
-                else {
-                    this.setState({isLoaded: true, event: result});
-                }
-            }).catch(err => console.error(err));
+    /*deleteThisEvent() {
+    fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result});
+            }
+        }).catch(err => console.error(err));
 
-        
-        */
+    
+    */
 
     // deleteThisEvent() {
     //     fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
@@ -88,14 +85,14 @@ export default class EventCard extends React.Component {
     // }
 
 
-            
+
     editEventHandler() {
         this.setState({ showEdit: true });
     }
 
     closeModalHandler() {
         this.setState({ showEdit: false });
-        this.props.reRender(this.state,'true')
+        this.props.reRender(this.state, 'true')
     }
 
     handleTitleChange(event) { this.setState({ title: event.target.value }); }
@@ -122,18 +119,18 @@ export default class EventCard extends React.Component {
         // console.log(`Time: ${time} == ${oldTime}: ${time == oldTime}`);
         // console.log(`Duration: ${duration} == ${oldDuration}: ${duration == oldDuration}`);
         if (title === oldTitle && message === oldMessage && date === oldDate && time === oldTime && duration === oldDuration) {
-            this.setState({showError: true});
+            this.setState({ showError: true });
             return;
         }
-        this.setState({showError: false});
+        this.setState({ showError: false });
 
         let dateTime;
         if (date.includes(".")) {
             dateTime = time + "-" + date;
-        } else{
+        } else {
             let dateArray = date.split("-");
             let newDate = dateArray[2] + "." + dateArray[1] + "." + dateArray[0];
-            dateTime = time + "-" + newDate; 
+            dateTime = time + "-" + newDate;
         }
 
         let data = {
@@ -147,18 +144,18 @@ export default class EventCard extends React.Component {
 
         fetch(`http://localhost:8000/api/events/${this.state.id}`, {
             method: "put",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         })
-        .then(res => res.json())
-        .then(result => {
-            if (result.error)
-                this.setState({isLoaded: true, error: result.error});
-            else {
-                this.setState({isLoaded: true, event: result})
-                this.closeModalHandler();
-            }
-        }).catch(err => console.error(err));
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({ isLoaded: true, error: result.error });
+                else {
+                    this.setState({ isLoaded: true, event: result })
+                    this.closeModalHandler();
+                }
+            }).catch(err => console.error(err));
 
         // fetch(`http://localhost:8000/api/events/${this.state.id}`, {
         //     method: "put",
@@ -169,18 +166,17 @@ export default class EventCard extends React.Component {
         // .then(txt => console.log(txt))
         // .catch(err => console.error(err));
 
-        
+
     }
 
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
-        _id = this.state.id;
-
+        // _id = this.state.id;
 
 
         this.title = [];
         this.description = [];
-        
+
         if (this.props.event_title.length > 13) {
             this.title.push(this.props.event_title.substring(0, 13) + "...")
         } else {
@@ -210,36 +206,36 @@ export default class EventCard extends React.Component {
 
                     <Modal.Body style={{ backgroundColor: bgColor }}>
 
-                        <Alert variant="warning" show={this.state.showError} onClose={() => this.setState({showError: false})} dismissible>Keine Werte geändert!</Alert>
+                        <Alert variant="warning" show={this.state.showError} onClose={() => this.setState({ showError: false })} dismissible>Keine Werte geändert!</Alert>
 
                         <Form>
                             <Form.Group className="mb-3" controlId="inputEventTitle" style={{ backgroundColor: bgColor }}>
                                 <Form.Label>Titel</Form.Label>
-                                <Form.Control type="text" style={{ backgroundColor: bgColor, color: txtColor }} placeholder="Mega wichtiges Event!" defaultValue={this.props.event_title} onChange={this.handleTitleChange}/>
+                                <Form.Control type="text" style={{ backgroundColor: bgColor, color: txtColor }} placeholder="Mega wichtiges Event!" defaultValue={this.props.event_title} onChange={this.handleTitleChange} />
                                 <Form.Text className="text-muted">
                                 </Form.Text>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="inputEventDescription">
                                 <Form.Label>Beschreibung</Form.Label>
-                                <Form.Control as="textarea" style={{ height: '100px', backgroundColor: bgColor, color: txtColor }} placeholder="Ganz wichtige Beschreibung für mega wichtiges Event!" defaultValue={this.props.event_description} onChange={this.handleMessageeChange}/>
+                                <Form.Control as="textarea" style={{ height: '100px', backgroundColor: bgColor, color: txtColor }} placeholder="Ganz wichtige Beschreibung für mega wichtiges Event!" defaultValue={this.props.event_description} onChange={this.handleMessageeChange} />
                             </Form.Group>
 
 
                             <Form className="mb-3 d-md-flex justify-content-between">
                                 <Form.Group className="mb-3" controlId="inputEventDate">
                                     <Form.Label>Datum</Form.Label>
-                                    <Form.Control type="date" style={{ width: '135px', backgroundColor: bgColor, color: txtColor }} required="true" defaultValue={this.realDate} onChange={this.handleDateChange}/>
+                                    <Form.Control type="date" style={{ width: '135px', backgroundColor: bgColor, color: txtColor }} required="true" defaultValue={this.realDate} onChange={this.handleDateChange} />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="inputEventDate">
                                     <Form.Label>Zeit</Form.Label>
-                                    <Form.Control type="time" style={{ width: '135px', backgroundColor: bgColor, color: txtColor }} required="true" defaultValue={this.props.event_time} onChange={this.handleTimeChange}/>
+                                    <Form.Control type="time" style={{ width: '135px', backgroundColor: bgColor, color: txtColor }} required="true" defaultValue={this.props.event_time} onChange={this.handleTimeChange} />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="inputEventDuration">
                                     <Form.Label>Dauer</Form.Label>
-                                    <Form.Control type="time" defaultValue={this.props.event_duration} style={{ width: '135px', backgroundColor: bgColor, color: txtColor }} required="true" onChange={this.handleDurationChange}/>
+                                    <Form.Control type="time" defaultValue={this.props.event_duration} style={{ width: '135px', backgroundColor: bgColor, color: txtColor }} required="true" onChange={this.handleDurationChange} />
                                 </Form.Group>
 
                             </Form>
@@ -256,29 +252,28 @@ export default class EventCard extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-                    <div class=" m-1 ">
-                        <Card border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem'}}>
-                            <Card.Header >
-                                <Card.Title>{this.title}</Card.Title>
-                            </Card.Header>
-                            <Card.Body>
-                                <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
-                                <Card.Text>
+                <div class=" m-1 ">
+                    <Card border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem' }}>
+                        <Card.Header >
+                            <Card.Title>{this.title}</Card.Title>
+                        </Card.Header>
+                        <Card.Body>
+                            <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
+                            <Card.Text>
                                 {this.description}
-                            
-                                    </Card.Text>
-                                </Card.Body>
-                                <Card.Footer>
-                                    <Button variant="primary" size='sm' onClick={this.editEventHandler.bind(this)}>Bearbeiten</Button>
-                                    &nbsp;&nbsp;
-                                    <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
-                                </Card.Footer>
-                            </Card>
-                    </div>
-                    </>
+
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Button variant="primary" size='sm' onClick={this.editEventHandler.bind(this)}>Bearbeiten</Button>
+                            &nbsp;&nbsp;
+                            <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
+                        </Card.Footer>
+                    </Card>
+                </div>
+            </>
 
         )
     }
 
 }
-export { _id as _id, _title as _title, _description as _description, _date as _date, _time as _time, _duration as _duration };
