@@ -44,7 +44,7 @@ export class NewEventPopup extends React.Component {
 
     handleClose() {
         ModalContext.newEvent = false;
-        this.setState({});
+        this.props.reRender(this.state, 'true')
 
     }
 
@@ -81,7 +81,8 @@ export class NewEventPopup extends React.Component {
 
 
         // refreshMain(Math.random());
-        this.props.refresh(Math.random());
+        //this.props.refresh(Math.random());
+        this.props.reRender(this.state, 'true')
         this.handleClose();
     }
 
@@ -162,6 +163,7 @@ export class DeleteEventPopup extends React.Component {
         super(props);
 
         this.handleClose = this.handleClose.bind(this);
+        
     }
     
     handleClose() {
@@ -178,7 +180,7 @@ export class DeleteEventPopup extends React.Component {
         .then(res => res.json())
         .then(res => console.log(res))
         .catch(err => console.error(err));
-        this.props.reRender(this.state, 'true')
+        this.props.reRender(this.state, 'true', 'events')
     }
 
     render() {
@@ -216,10 +218,27 @@ export class DeleteAllEventsPopup extends React.Component {
         super(props);
 
         this.handleClose = this.handleClose.bind(this);
+        this.deleteAll = this.deleteAll.bind(this)
     }
     handleClose() {
         ModalContext.deleteAllEvents = false;
-        this.setState({});
+        this.props.reRender(this.state, 'true', 'events')
+    }
+
+    deleteAll() {
+
+        fetch(`http://localhost:8000/api/allevents`, { method: "DELETE" })
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result})
+                this.handleClose();
+            }
+        }).catch(err => console.error(err));
+
+        
     }
 
     componentDidMount() {
@@ -247,7 +266,7 @@ export class DeleteAllEventsPopup extends React.Component {
                     <Button variant="success" onClick={this.handleClose}>
                         Ok ne
                     </Button>
-                    <Button variant="danger" onClick={this.handleClose}>
+                    <Button variant="danger" onClick={this.deleteAll.bind(this)}>
                         *nuke it*
                     </Button>
                 </Modal.Footer>
