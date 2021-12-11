@@ -8,9 +8,11 @@ import './Contents/weather.css'
 
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <div className='root'>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </div>,
   document.getElementById('root')
 );
 

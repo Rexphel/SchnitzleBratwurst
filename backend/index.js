@@ -213,10 +213,3 @@ app.listen(PORT, () => {
         res.status(500).send({error: err});
     }
 */
-
-let allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Headers', "*");
-    next();
-}
-app.use(allowCrossDomain);
