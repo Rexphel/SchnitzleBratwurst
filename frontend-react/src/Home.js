@@ -1,15 +1,13 @@
 import React from 'react';
 // eslint-disable-next-line
-import { Button, Modal, Form, Offcanvas } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import EventCard from './Contents/Card';
+import EventCanvas from './Contents/EventCanvas';
 import LoadingCard from './Contents/LoadingCard';
-//import { popup_new_event, popup_delete_event } from './Contents/Popups'
-//import EventCanvas from './Contents/Offcanvas';
-//import { DateTime } from 'react-datetime-bootstrap';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
-import { NewEventPopup, DeleteAllPopup } from "./Contents/NewPopup";
+import { NewEventPopup, DeleteEventPopup, DeleteAllEventsPopup } from "./Contents/NewPopup";
 import {WeatherGUI} from "./Contents/Weather"
 
 export const ModalContext = {
@@ -20,18 +18,30 @@ export const ModalContext = {
     eventCanvas: false
 };
 
+export const CurrentID = {id: "null", reFetch: () => {console.log("null lol")}};
+
 var Theme = 'dark';
 
-class Content extends React.Component {
+export default class Content extends React.Component {
+
+
 
     constructor(props) {
         super(props);
-
+        this.props = props;
         this.state = {
             isLoaded: false,
             error: null,
             events: []
-        }
+            
+        };
+        
+   
+        this.reRender = this.reRender.bind(this);
+    }
+
+        // refreshMain = refreshMain.bind(this);
+        // this.updateText1 = this.updateText1.bind(this);
 
         // const new_event = useState(false);
         // this.show_new_event = new_event[0];
@@ -62,24 +72,47 @@ class Content extends React.Component {
         // const [show_event_canvas, setShow_event_canvas] = useState(false);
         // const handleClose_event_canvas = () => setShow_event_canvas(false);
         // const handleShow_event_canvas = () => setShow_event_canvas(true);
-    }
+  
+    reRender(value, shouldfetch = new Boolean('false') , fetch_type) { //value always "this.state", shouldfetch: Bool -> reFetch?, fetch_type: fetchType
+        if (shouldfetch === 'true') {
+            fetch("http://localhost:8000/api/events")
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, events: result});
+                    this.setState({value});
+                }
+            }).catch(err => console.error(err)); 
+        } else {
+        
+            this.setState({value});
+        }
+    }   
+
+    // makeApiCall() {
+    //     // console.log("Api Call");
+    //     fetch("http://localhost:8000/api/events")
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             if (result.error)
+    //                 this.setState({ isLoaded: true, error: result.error });
+    //             else {
+    //                 this.setState({ isLoaded: true, events: result });
+    //             }
+    //         }).catch(err => console.error(err));
+    // }
 
     componentDidMount() {
-        console.log("Hello, sdfasdg yo");
-        fetch("http://localhost:8000/api/events")
-        .then(res => res.json())
-        .then(result => {
-            if (result.error)
-                this.setState({isLoaded: true, error: result.error});
-            else {
-                this.setState({isLoaded: true, events: result});
-            }
-        }).catch(err => console.error(err));
+            this.reRender(this.state, 'true');
+        //this.makeApiCall();
+        // console.log("Mounted");
     }
 
     handleShowNewEvent() {
         ModalContext.newEvent = true;
-        this.setState({});
+        this.reRender(this.state);
     }
 
     toggleTheme(){
@@ -89,37 +122,51 @@ class Content extends React.Component {
         else{
             Theme = 'dark';
         } 
-        this.setState({});
+        this.reRender(this.state);
+        console.log(Theme)
     }
-
+    
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
-        this.setState({});
+        this.reRender(this.state);
     }
 
+    // updateText1 = (text) => {
+    //     // window.location.reload(false);
+    //     // fetch(setTimeout(() => window.location.reload(false), 500));
+    //     new Promise((resolve) => setTimeout(resolve, 500))
+    //         .then(() => {
+    //             // window.location.reload(false);
+    //             this.setState({});
+    //         })
+    // }
+
     render() {
-      
-       //Show x Event Cards
-    this.items = []
+        // console.log("Rendered")
+        //Show x Event Cards
+        this.items = []
         if (this.state.isLoaded) {
+            // console.log("isLoaded");
             if (!this.state.error) {
+                // console.log("No Error");
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
-                    this.items.push(<EventCard id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} />);
+                    this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_date={datetime[1]} event_time={datetime[0]} event_duration={event.duration} />);
+
                 }
             }
-        }  else {
+        } else {
             this.items.push(<LoadingCard />);
             this.items.push(<LoadingCard />);
             this.items.push(<LoadingCard />);
             this.items.push(<LoadingCard />);
-        }  
+        }
 
-        
-        
+
+
         return (
             //Show x Event Cards
-
+            
             <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
                 <GlobalStyles />
                 <div className="mt-3">
@@ -148,21 +195,32 @@ class Content extends React.Component {
             <Button variant="secondary" onClick={handleShow_edit_event}>
                 Testknopp3
             </Button>           */}
-         
 
-        
-        <hr />
-            {/*!!!WORK HERE!!!*/} 
-            {/*   class="m-auto d-flex justify-content-between"*/}
+
+                    <hr />
+                    {/*!!!WORK HERE!!!*/}
+                    {/*   class="m-auto d-flex justify-content-between"*/}
+
 
                     <div class="d-flex justify-content-center flex-wrap" >
-                        {this.items}   
-                    </div> 
+                        {this.items}
+                    </div>
 
-                    <NewEventPopup/>
-                    <>
+
+                    <NewEventPopup reRender={this.reRender}/>
+                    <DeleteEventPopup reRender={this.reRender}/>
+                    <DeleteAllEventsPopup reRender={this.reRender}/>
+                    <EventCanvas reRender={this.reRender}/>
+                    <hr />
+                    <WeatherGUI />
                     {/*-----EDIT EVENT POPUP-----*/}
                     {/* <Modal
+                    <NewEventPopup refresh={() => {this.makeApiCall(); this.props.refresh()}} />
+
+                    
+                        {/*-----EDIT EVENT POPUP-----*/}
+                        {/* <Modal
+
                         show={show_edit_event}
                         onHide={handleClose_edit_event}
                         backdrop="static"
@@ -220,8 +278,8 @@ class Content extends React.Component {
                     </Modal> */}
 
 
-                    {/*-----DELETE EVENT POPUP-----*/}
-                    {/* <Modal
+                        {/*-----DELETE EVENT POPUP-----*/}
+                        {/* <Modal
                         show={show_delete_event}
                         onHide={handleClose_delete_event}
                         backdrop="static"
@@ -244,11 +302,11 @@ class Content extends React.Component {
                         </Modal.Footer>
                     </Modal> */}
 
-                    {/*-----DELETE ALL EVENTS POPUP-----*/}
-                    
-                    <DeleteAllPopup />
-                    
-{/* 
+                        {/*-----DELETE ALL EVENTS POPUP-----*/}
+
+
+                        {/* 
+
                     <Offcanvas show={show_event_canvas} onHide={handleClose_event_canvas} style={{ backgroundColor: bgColor }} >
                         <Offcanvas.Header closeButton closeVariant='white'>
                             <Offcanvas.Title><h3>{event_title}</h3></Offcanvas.Title>
@@ -259,15 +317,11 @@ class Content extends React.Component {
                             {event_description}
                         </Offcanvas.Body>
                     </Offcanvas> */}
-                    
-                    </>
-                    <hr />
-                    <WeatherGUI />
-                </div>
+</div>
+                
+
             </ThemeProvider>
         );
     }
 
 }
-
-export default Content;
