@@ -44,7 +44,7 @@ export class NewEventPopup extends React.Component {
 
     handleClose() {
         ModalContext.newEvent = false;
-
+        this.setState({});
     }
 
     componentDidMount() {
