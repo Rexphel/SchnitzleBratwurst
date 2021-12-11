@@ -47,6 +47,7 @@ export default class EventCard extends React.Component {
 
     handleShowDeleteEvent() {
         ModalContext.deleteEvent = true
+        CurrentID.id = this.state.id;
         this.props.reRender(this.state, 'true')
 
     }

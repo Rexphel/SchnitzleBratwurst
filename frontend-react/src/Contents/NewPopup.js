@@ -1,5 +1,5 @@
-import { ModalContext, } from '../Home';
 import React from 'react';
+import { ModalContext, CurrentID } from '../Home';
 import { Button, Modal, Form, } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
 import { darkTheme } from '../Styling/Theme';
@@ -165,13 +165,12 @@ export class NewEventPopup extends React.Component {
         );
     }
 }
-
 export class DeleteEventPopup extends React.Component {
     constructor(props) {
         super(props);
-
+        this.props = props;
         this.handleClose = this.handleClose.bind(this);
-        
+        this.deleteEvent = this.deleteEvent.bind(this)
     }
     
     handleClose() {
@@ -184,11 +183,18 @@ export class DeleteEventPopup extends React.Component {
     }
 
     deleteEvent() {
-        fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
+        fetch(`http://localhost:8000/api/events/${CurrentID.id}`, {method: "DELETE"})
         .then(res => res.json())
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-        this.props.reRender(this.state, 'true')
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result})
+                this.props.reRender(this.state,'true')
+                this.handleClose();
+            }
+        }).catch(err => console.error(err));
+
     }
 
     render() {
@@ -211,7 +217,7 @@ export class DeleteEventPopup extends React.Component {
                     <Button variant="success" onClick={this.handleClose}>
                         Doch nich!
                     </Button>
-                    <Button variant="danger" onClick={this.handleClose}>
+                    <Button variant="danger" onClick={this.deleteEvent.bind(this)}>
                         Jaaa!
                     </Button>
                 </Modal.Footer>
