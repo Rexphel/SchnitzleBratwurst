@@ -53,7 +53,7 @@ export default class EventCard extends React.Component {
 
     handleShowDeleteEvent() {
         ModalContext.deleteEvent = true
-        this.props.reRender(this.state, 'true', 'events')
+        this.props.reRender(this.state, 'true')
 
     }
 
@@ -61,7 +61,7 @@ export default class EventCard extends React.Component {
     handleShowEventCanvas() {
         //fetch(`http://localhost:8000/api/events/${_id}`)
         ModalContext.eventCanvas = true;
-        this.props.reRender(this.state, 'true', 'events')
+        this.props.reRender(this.state, 'true')
 
     }
 
@@ -94,7 +94,7 @@ export default class EventCard extends React.Component {
 
     closeModalHandler() {
         this.setState({ showEdit: false });
-        this.props.reRender(this.state,'true', 'events')
+        this.props.reRender(this.state,'true')
     }
 
     handleTitleChange(event) { this.setState({ title: event.target.value }); }
@@ -149,11 +149,26 @@ export default class EventCard extends React.Component {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         })
-        .then(res => res.text())
-        .then(txt => console.log(txt))
-        .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result})
+                this.closeModalHandler();
+            }
+        }).catch(err => console.error(err));
 
-        this.closeModalHandler();
+        // fetch(`http://localhost:8000/api/events/${this.state.id}`, {
+        //     method: "put",
+        //     headers: {"Content-Type": "application/json"},
+        //     body: JSON.stringify(data)
+        // })
+        // .then(res => res.text())
+        // .then(txt => console.log(txt))
+        // .catch(err => console.error(err));
+
+        
     }
 
     render() { //event_title="" event_duration="" event_date="" event_description=""

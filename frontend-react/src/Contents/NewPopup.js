@@ -188,7 +188,7 @@ export class DeleteEventPopup extends React.Component {
         .then(res => res.json())
         .then(res => console.log(res))
         .catch(err => console.error(err));
-        this.props.reRender(this.state, 'true', 'events')
+        this.props.reRender(this.state, 'true')
     }
 
     render() {
@@ -230,7 +230,7 @@ export class DeleteAllEventsPopup extends React.Component {
     }
     handleClose() {
         ModalContext.deleteAllEvents = false;
-        this.props.reRender(this.state, 'true', 'events')
+        this.props.reRender(this.state, 'true')
     }
 
     deleteAll() {
