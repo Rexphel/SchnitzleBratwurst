@@ -28,9 +28,8 @@ export class WeatherGUI extends React.Component{
         const weatherimg = weather.icon;
 
         return (
-            
-            <div>
-                <Card className='Weather_Card' border="primary" bg='dark' text='light' style={{ width: '200px' }}>
+            <div class=" m-1 ">
+                <Card className='Weather_Card' border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem' }}>
                     <Card.Body>
                         <Card.Title>
                             Und nun:
@@ -41,15 +40,12 @@ export class WeatherGUI extends React.Component{
                                 {Math.round(main.temp)}°C, gefühlt {Math.round(main.feels_like)}°C
                                 <br/>
                                 {weather.description}
+                                <br/>
+                                <Card.Img src={`http://openweathermap.org/img/wn/${weatherimg}@2x.png`} style={{width:"130px"}} />
                         </Card.Text>
                     </Card.Body>
-                    <Card.Img src={`http://openweathermap.org/img/wn/${weatherimg}@4x.png`} />
                 </Card>
             </div>
-
-
-            
-            )
-
+        )
     }
 }

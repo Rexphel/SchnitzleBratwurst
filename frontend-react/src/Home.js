@@ -8,7 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
 import { NewEventPopup, DeleteEventPopup, DeleteAllEventsPopup } from "./Contents/NewPopup";
-import {WeatherGUI} from "./Contents/Weather"
+import { WeatherGUI } from "./Contents/Weather"
 
 export const ModalContext = {
     newEvent: false,
@@ -206,21 +206,21 @@ export default class Content extends React.Component {
 
 
                     <hr />
+                    
                     {/*!!!WORK HERE!!!*/}
                     {/*   class="m-auto d-flex justify-content-between"*/}
 
 
                     <div class="d-flex justify-content-center flex-wrap" >
                         {this.items}
+                        <WeatherGUI/>
                     </div>
-
 
                     <NewEventPopup reRender={this.reRender}/>
                     <DeleteEventPopup reRender={this.reRender}/>
                     <DeleteAllEventsPopup reRender={this.reRender}/>
                     <EventCanvas reRender={this.reRender}/>
-                    <hr />
-                    <WeatherGUI />
+                    
                     {/*-----EDIT EVENT POPUP-----*/}
                     {/* <Modal
                     <NewEventPopup refresh={() => {this.makeApiCall(); this.props.refresh()}} />
@@ -325,7 +325,7 @@ export default class Content extends React.Component {
                             {event_description}
                         </Offcanvas.Body>
                     </Offcanvas> */}
-</div>
+        </div>
                 
 
             </ThemeProvider>
