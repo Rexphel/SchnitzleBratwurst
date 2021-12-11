@@ -66,16 +66,15 @@ class Content extends React.Component {
 
     componentDidMount() {
         console.log("Hello, sdfasdg yo");
-        fetch("http://localhost:8000/api/events", { 
-            mode: 'no-cors'
-        }).then(res => res.json())
-            .then(result => {
-                if (result.error)
-                    this.setState({isLoaded: true, error: result.error});
-                else {
-                    this.setState({isLoaded: true, events: result});
-                }
-            }).catch(err => console.error(err));
+        fetch("http://localhost:8000/api/events")
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, events: result});
+            }
+        }).catch(err => console.error(err));
     }
 
     handleShowNewEvent() {

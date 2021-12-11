@@ -25,21 +25,24 @@ export class WeatherGUI extends React.Component{
     render() {
 
         const { main, weather } = this.state;
-
+        const weatherimg = weather.icon;
 
         return (
             <div>
-                <Card border="primary" bg='dark' text='light' style={{ width: '16rem' }}>
+                <Card className='Weather_Card' border="primary" bg='dark' text='light' style={{ width: '200px' }}>
                     <Card.Body>
                         <Card.Title>
-                            Und nun: Das Wetter heute in {city}:
+                            Und nun:
+                            <br/>
+                            Das Wetter heute in {city}:
                         </Card.Title>
                         <Card.Text>
-                                {main.temp}°C gefühlt {main.feels_like}°C
-                                &nbsp;&nbsp;
-                                Himmel ist {weather.description}
+                                {Math.round(main.temp)}°C gefühlt {Math.round(main.feels_like)}°C
+                                <br/>
+                                {weather.description}
                         </Card.Text>
                     </Card.Body>
+                    <Card.Img src={`http://openweathermap.org/img/wn/${weatherimg}@2x.png`} />
                 </Card>
             </div>
         )
