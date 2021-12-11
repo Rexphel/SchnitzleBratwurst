@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoManager = require("./mongodb-manager");
 const mongo = require("./mongodb-client");
-const { debug_req } = require('./helper.js');
+const { debug_req, debug } = require('./helper.js');
 const fs = require("fs");
 
 const PORT = 8000;
@@ -68,8 +68,8 @@ app.post(`${PREFIX}/events`, async (req, res) => {
         }
         const result = await mongoManager.addEvent(mongo.getCollection(), query.title, query.message, query.date, query.duration);
         const id = result.insertedId;
-        res.set("Location", `${PREFIX}/events/${id}`);
-        res.status(201).end();
+        // res.set("Location", `${PREFIX}/events/${id}`);
+        res.status(201).send({id: id});
     } catch (err) {
         console.error(err);
         res.status(500).send({error: err});
@@ -96,7 +96,22 @@ app.delete(`${PREFIX}/events/:eventId`, async (req, res) => {
             res.status(500).send({error: "Could not delete!", done: false});
             return;
         }
-        res.status(202),send({done: true});
+        res.status(202).send({done: true});
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({error: err});
+    }
+});
+
+app.delete(`${PREFIX}/allevents`, async (req, res) => {
+    try {
+        debug_req(req);
+        if (!mongo.isConnected()) {
+            res.status(500).send({error: "Database not connected (yet)! Please retry in a few seconds."});
+            return;
+        }
+        const result = await mongoManager.drop(mongo.getCollection());
+        res.status(202).send({done: result});
     } catch (err) {
         console.error(err);
         res.status(500).send({error: err});
@@ -159,6 +174,7 @@ app.get(`${PREFIX}/version`, async (req, res) => {
 });
 
 app.use((req, res, next) => {
+    debug(`${req.method} request on ${req.originalUrl} but nothing found (404)!`);
     res.status(404).send({error: "Nothing found here...", errorCode: 404});
 });
 
@@ -179,3 +195,10 @@ app.listen(PORT, () => {
         res.status(500).send({error: err});
     }
 */
+
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Headers', "*");
+    next();
+}
+app.use(allowCrossDomain);
