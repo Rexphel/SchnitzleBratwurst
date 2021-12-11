@@ -10,7 +10,7 @@ import {
 import { Container } from "react-bootstrap";
 import React from "react";
 
-const software_version = "2021.12.11.16
+const software_version = "2021.12.11.16"
 const event_description_on_card_length = 100
 
 export default class App extends React.Component {
