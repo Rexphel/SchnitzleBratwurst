@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Card} from "react-bootstrap";
+import { Button, Card, Modal , Alert, Form } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
 import { ModalContext } from '../Home';
+import { darkTheme } from '../Styling/Theme';
 var _id = ''
 var _title = ''
 var _description = ''
@@ -21,21 +22,6 @@ export default class EventCard extends React.Component {
             isLoaded: false,
             error: null,
             event: [],
-            id: this.props.id
-        };
-        this.handleOpen = this.handleShowEventCanvas.bind(this);
-        this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
-    }
-
-    handleShowDeleteEvent() {
-        ModalContext.deleteEvent = true
-        this.props.reRender(this.state)
-
-    }
-
-
-    handleShowEventCanvas() {
-        //fetch(`http://localhost:8000/api/events/${_id}`)
             id: this.props.id,
             showEdit: false,
             showError: false,
@@ -45,6 +31,9 @@ export default class EventCard extends React.Component {
             time: this.props.event_time,
             duration: this.props.event_duration
         };
+        
+        this.handleOpen = this.handleShowEventCanvas.bind(this);
+        this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
         this.editEventHandler = this.editEventHandler.bind(this);
         this.closeModalHandler = this.closeModalHandler.bind(this);
 
@@ -62,7 +51,21 @@ export default class EventCard extends React.Component {
         this.realDate = this.splitted[2] + "-" + this.splitted[1] + "-" + this.splitted[0];
     }
 
-    {/*deleteThisEvent() {
+    handleShowDeleteEvent() {
+        ModalContext.deleteEvent = true
+        this.props.reRender(this.state, 'true')
+
+    }
+
+
+    handleShowEventCanvas() {
+        //fetch(`http://localhost:8000/api/events/${_id}`)
+        ModalContext.eventCanvas = true;
+        this.props.reRender(this.state, 'true')
+
+    }
+
+        /*deleteThisEvent() {
         fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
             .then(res => res.json())
             .then(result => {
@@ -72,10 +75,9 @@ export default class EventCard extends React.Component {
                     this.setState({isLoaded: true, event: result});
                 }
             }).catch(err => console.error(err));
-        ModalContext.eventCanvas = true;
-        this.props.reRender(this.state, 'true')
+
         
-    */}
+        */
 
     // deleteThisEvent() {
     //     fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
@@ -92,6 +94,7 @@ export default class EventCard extends React.Component {
 
     closeModalHandler() {
         this.setState({ showEdit: false });
+        this.props.reRender(this.state,'true')
     }
 
     handleTitleChange(event) { this.setState({ title: event.target.value }); }
@@ -132,7 +135,6 @@ export default class EventCard extends React.Component {
             dateTime = time + "-" + newDate; 
         }
 
-
         let data = {
             title: title,
             message: message,
@@ -147,11 +149,26 @@ export default class EventCard extends React.Component {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         })
-        .then(res => res.text())
-        .then(txt => console.log(txt))
-        .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result})
+                this.closeModalHandler();
+            }
+        }).catch(err => console.error(err));
 
-        this.closeModalHandler();
+        // fetch(`http://localhost:8000/api/events/${this.state.id}`, {
+        //     method: "put",
+        //     headers: {"Content-Type": "application/json"},
+        //     body: JSON.stringify(data)
+        // })
+        // .then(res => res.text())
+        // .then(txt => console.log(txt))
+        // .catch(err => console.error(err));
+
+        
     }
 
     render() { //event_title="" event_duration="" event_date="" event_description=""
@@ -238,41 +255,26 @@ export default class EventCard extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
-
-
-
-                <div class=" m-1 ">
-                    <Card border="primary" bg='dark' text='light' style={{ width: '16rem' }}>
-                        <Card.Header >
-                            <Card.Title>{this.props.event_title}</Card.Title>
-                        </Card.Header>
-                        <Card.Body>
-                            <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
-                            <Card.Text>
-                                {event_description}
-                                <Button variant='link' size='sm'>Weiterlesen</Button>
-
-            <div class=" m-1 ">
-                <Card border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem'}}>
-                    <Card.Header >
-                        <Card.Title>{this.title}</Card.Title>
-                    </Card.Header>
-                    <Card.Body>
-                        <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
-                        <Card.Text>
-                           {this.description}
-                    
-                            </Card.Text>
-                        </Card.Body>
-                        <Card.Footer>
-                            <Button variant="primary" size='sm' onClick={this.editEventHandler.bind(this)}>Bearbeiten</Button>
-                            &nbsp;&nbsp;
-                            <Button variant="danger" size='sm' onClick={this.deleteThisEvent.bind(this)}>Löschen</Button>
-                        </Card.Footer>
-                    </Card>
-                </div>
-            </>
+                    <div class=" m-1 ">
+                        <Card border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem'}}>
+                            <Card.Header >
+                                <Card.Title>{this.title}</Card.Title>
+                            </Card.Header>
+                            <Card.Body>
+                                <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
+                                <Card.Text>
+                                {this.description}
+                            
+                                    </Card.Text>
+                                </Card.Body>
+                                <Card.Footer>
+                                    <Button variant="primary" size='sm' onClick={this.editEventHandler.bind(this)}>Bearbeiten</Button>
+                                    &nbsp;&nbsp;
+                                    <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
+                                </Card.Footer>
+                            </Card>
+                    </div>
+                    </>
 
         )
     }

@@ -1,12 +1,11 @@
 import React from 'react';
 // eslint-disable-next-line
-import { Button } from "react-bootstrap";
-import EventCanvas from './Contents/EventCanvas';
 
 
-=======
+
 import { Button } from "react-bootstrap";
 import EventCard from './Contents/Card';
+import EventCanvas from './Contents/EventCanvas';
 import LoadingCard from './Contents/LoadingCard';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
@@ -24,25 +23,23 @@ export const ModalContext = {
 
 var Theme = 'dark';
 
-class Content extends React.Component {
+export default class Content extends React.Component {
 
 
 
     constructor(props) {
         super(props);
         this.props = props;
-            this.state = {
-                isLoaded: false,
-                error: null,
-                events: [],
-                
-            };
+        this.state = {
+            isLoaded: false,
+            error: null,
+            events: []
+            
+        };
         
    
-            this.reRender = this.reRender.bind(this)
-
-
-        }
+        this.reRender = this.reRender.bind(this);
+    }
 
         // refreshMain = refreshMain.bind(this);
         // this.updateText1 = this.updateText1.bind(this);
@@ -76,7 +73,7 @@ class Content extends React.Component {
         // const [show_event_canvas, setShow_event_canvas] = useState(false);
         // const handleClose_event_canvas = () => setShow_event_canvas(false);
         // const handleShow_event_canvas = () => setShow_event_canvas(true);
-    }
+    
     
     reRender(value, shouldfetch = new Boolean('false') , fetch_type) { //value always "this.state", shouldfetch: Bool -> reFetch?, fetch_type: fetchType
         if (shouldfetch === 'true') {
@@ -90,27 +87,28 @@ class Content extends React.Component {
                     this.setState({value});
                 }
             }).catch(err => console.error(err)); 
-    } else {
+        } else {
         
-        this.setState({value});
-    }
-}   
+            this.setState({value});
+        }
+    }   
 
-    makeApiCall() {
-        // console.log("Api Call");
-        fetch("http://localhost:8000/api/events")
-            .then(res => res.json())
-            .then(result => {
-                if (result.error)
-                    this.setState({ isLoaded: true, error: result.error });
-                else {
-                    this.setState({ isLoaded: true, events: result });
-                }
-            }).catch(err => console.error(err));
-    }
+    // makeApiCall() {
+    //     // console.log("Api Call");
+    //     fetch("http://localhost:8000/api/events")
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             if (result.error)
+    //                 this.setState({ isLoaded: true, error: result.error });
+    //             else {
+    //                 this.setState({ isLoaded: true, events: result });
+    //             }
+    //         }).catch(err => console.error(err));
+    // }
 
     componentDidMount() {
-        this.makeApiCall();
+            this.reRender(this.state, 'true');
+        //this.makeApiCall();
         // console.log("Mounted");
     }
 
@@ -211,10 +209,10 @@ class Content extends React.Component {
                     </div>
 
 
-                    <NewEventPopup />
-                    <DeleteEventPopup />
-                    <DeleteAllEventsPopup />
-                    <EventCanvas />
+                    <NewEventPopup reRender={this.reRender}/>
+                    <DeleteEventPopup reRender={this.reRender}/>
+                    <DeleteAllEventsPopup reRender={this.reRender}/>
+                    <EventCanvas reRender={this.reRender}/>
                     <hr />
                     <WeatherGUI />
                     {/*-----EDIT EVENT POPUP-----*/}
@@ -330,4 +328,3 @@ class Content extends React.Component {
 
 }
 
-export default Content;

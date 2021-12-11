@@ -44,7 +44,6 @@ export class NewEventPopup extends React.Component {
 
     handleClose() {
         ModalContext.newEvent = false;
-        this.setState({});
 
     }
 
@@ -70,19 +69,29 @@ export class NewEventPopup extends React.Component {
             date: dateTime,
             duration: duration
         }
-        fetch("http://localhost:8000/api/events", {
+
+
+        fetch(`http://localhost:8000/api/events/`, {
             method: "post",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         })
-        .then(res => res.text())
-        .then(txt => console.log(txt))
-        .catch(err => console.error(err));
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, event: result});
+                    this.props.reRender(this.state, 'true')
+                    this.handleClose();
+                }
+            }).catch(err => console.error(err));
+
 
 
         // refreshMain(Math.random());
-        this.props.refresh(Math.random());
-        this.handleClose();
+        //this.props.refresh(Math.random());
+
     }
 
     handleTitleChange(event) { this.setState({ title: event.target.value }); }
@@ -162,6 +171,7 @@ export class DeleteEventPopup extends React.Component {
         super(props);
 
         this.handleClose = this.handleClose.bind(this);
+        
     }
     
     handleClose() {
@@ -216,10 +226,27 @@ export class DeleteAllEventsPopup extends React.Component {
         super(props);
 
         this.handleClose = this.handleClose.bind(this);
+        this.deleteAll = this.deleteAll.bind(this)
     }
     handleClose() {
         ModalContext.deleteAllEvents = false;
-        this.setState({});
+        this.props.reRender(this.state, 'true')
+    }
+
+    deleteAll() {
+
+        fetch(`http://localhost:8000/api/allevents`, { method: "DELETE" })
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result})
+                this.handleClose();
+            }
+        }).catch(err => console.error(err));
+
+        
     }
 
     componentDidMount() {
@@ -247,7 +274,7 @@ export class DeleteAllEventsPopup extends React.Component {
                     <Button variant="success" onClick={this.handleClose}>
                         Ok ne
                     </Button>
-                    <Button variant="danger" onClick={this.handleClose}>
+                    <Button variant="danger" onClick={this.deleteAll.bind(this)}>
                         *nuke it*
                     </Button>
                 </Modal.Footer>
