@@ -18,6 +18,8 @@ export const ModalContext = {
     eventCanvas: false
 };
 
+export const CurrentID = {id: "null", reFetch: () => {console.log("null lol")}};
+
 var Theme = 'dark';
 
 export default class Content extends React.Component {
