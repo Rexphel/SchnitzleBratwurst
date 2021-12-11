@@ -44,7 +44,6 @@ export class NewEventPopup extends React.Component {
 
     handleClose() {
         ModalContext.newEvent = false;
-        this.props.reRender(this.state, 'true')
 
     }
 
@@ -70,20 +69,29 @@ export class NewEventPopup extends React.Component {
             date: dateTime,
             duration: duration
         }
-        fetch("http://localhost:8000/api/events", {
+
+
+        fetch(`http://localhost:8000/api/events/`, {
             method: "post",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         })
-        .then(res => res.text())
-        .then(txt => console.log(txt))
-        .catch(err => console.error(err));
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, event: result});
+                    this.props.reRender(this.state, 'true')
+                    this.handleClose();
+                }
+            }).catch(err => console.error(err));
+
 
 
         // refreshMain(Math.random());
         //this.props.refresh(Math.random());
-        this.props.reRender(this.state, 'true')
-        this.handleClose();
+
     }
 
     handleTitleChange(event) { this.setState({ title: event.target.value }); }
