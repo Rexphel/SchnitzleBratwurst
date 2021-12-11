@@ -271,6 +271,7 @@ export default class EventCard extends React.Component {
                             <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
                         </Card.Footer>
                     </Card>
+                   
                 </div>
             </>
 
