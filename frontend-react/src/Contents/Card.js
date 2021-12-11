@@ -3,7 +3,6 @@ import { Button, Card, Modal, Alert, Form } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
 import { ModalContext, CurrentID } from '../Home';
 import { darkTheme } from '../Styling/Theme';
-import { updateThis } from './EventCanvas';
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text

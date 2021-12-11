@@ -4,9 +4,6 @@ import { Offcanvas } from "react-bootstrap";
 import { darkTheme } from '../Styling/Theme';
 // import { _id, _title, _description, _date, _time, _duration } from './Card';
 
-export function updateThis(text) {
-    this.setState({text});
-}
 
 export default class EventCanvas extends React.Component {
 
@@ -19,7 +16,6 @@ export default class EventCanvas extends React.Component {
         }
 
         this.handleClose = this.handleClose.bind(this);
-        updateThis = updateThis.bind(this);
     }
 
     handleClose() {
