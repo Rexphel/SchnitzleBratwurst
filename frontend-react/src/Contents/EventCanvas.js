@@ -28,7 +28,6 @@ export default class EventCanvas extends React.Component {
     }
 
     fetchData() {
-        console.log("fetched");
         fetch(`http://localhost:8000/api/events/${CurrentID.id}`)
         .then(res => res.json())
         .then(result => {
@@ -36,20 +35,17 @@ export default class EventCanvas extends React.Component {
             if (result.error)
                 this.setState({ isLoaded: true, error: result.error });
             else
-                this.setState({ isLoaded: true, event: result });
+                this.setState({ isLoaded: true, event: result[0] });
         }).catch(err => { console.error(err); this.setState({ isLoaded: true, error: err }) });
     }
 
     componentDidMount() {
-        console.log("Canvas mounted");
         this.fetchData();
         CurrentID.reFetch = this.fetchData.bind(this);
-        console.log(CurrentID);
     }
 
 
     render() {
-        console.log("render", CurrentID.id);
         if (!ModalContext.eventCanvas) {
             return <></>;
         }
@@ -77,7 +73,7 @@ export default class EventCanvas extends React.Component {
                         <Offcanvas.Title><h3>{event.title}</h3></Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body bg-color='dark'>
-                        <Offcanvas.Title><h4> Am: {this.state.event.date}</h4><h5> für {this.state.event.duration}</h5> </Offcanvas.Title>
+                        <Offcanvas.Title><h4> Am: {event.date}</h4><h5> für {event.duration}</h5> </Offcanvas.Title>
                         <hr />
                         {event.message}
                     </Offcanvas.Body>
