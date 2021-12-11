@@ -44,7 +44,7 @@ export class NewEventPopup extends React.Component {
 
     handleClose() {
         ModalContext.newEvent = false;
-
+        this.setState({});
     }
 
     componentDidMount() {
@@ -192,7 +192,7 @@ export class DeleteEventPopup extends React.Component {
     }
 
     render() {
-        console.log("render");
+        // console.log("render");
         return (
             <Modal
                 show={ModalContext.deleteEvent}
