@@ -1,17 +1,27 @@
 import React from 'react';
-import { Button, Card, Modal, Form, Alert } from "react-bootstrap";
+import { Button, Card, Modal , Alert, Form } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
+import { ModalContext } from '../Home';
 import { darkTheme } from '../Styling/Theme';
+var _id = ''
+var _title = ''
+var _description = ''
+var _date = ''
+var _time = ''
+var _duration = ''
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
 
-class EventCard extends React.Component {
+export default class EventCard extends React.Component {
 
     constructor(props) {
         super(props)
         this.props = props;
         this.state = {
+            isLoaded: false,
+            error: null,
+            event: [],
             id: this.props.id,
             showEdit: false,
             showError: false,
@@ -21,6 +31,9 @@ class EventCard extends React.Component {
             time: this.props.event_time,
             duration: this.props.event_duration
         };
+        
+        this.handleOpen = this.handleShowEventCanvas.bind(this);
+        this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
         this.editEventHandler = this.editEventHandler.bind(this);
         this.closeModalHandler = this.closeModalHandler.bind(this);
 
@@ -38,19 +51,50 @@ class EventCard extends React.Component {
         this.realDate = this.splitted[2] + "-" + this.splitted[1] + "-" + this.splitted[0];
     }
 
-    deleteThisEvent() {
-        fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
-            .then(res => res.json())
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
+    handleShowDeleteEvent() {
+        ModalContext.deleteEvent = true
+        this.props.reRender(this.state, 'true')
+
     }
 
+
+    handleShowEventCanvas() {
+        //fetch(`http://localhost:8000/api/events/${_id}`)
+        ModalContext.eventCanvas = true;
+        this.props.reRender(this.state, 'true')
+
+    }
+
+        /*deleteThisEvent() {
+        fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({isLoaded: true, error: result.error});
+                else {
+                    this.setState({isLoaded: true, event: result});
+                }
+            }).catch(err => console.error(err));
+
+        
+        */
+
+    // deleteThisEvent() {
+    //     fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
+    //         .then(res => res.json())
+    //         .then(res => console.log(res))
+    //         .catch(err => console.error(err));
+    // }
+
+
+            
     editEventHandler() {
         this.setState({ showEdit: true });
     }
 
     closeModalHandler() {
         this.setState({ showEdit: false });
+        this.props.reRender(this.state,'true')
     }
 
     handleTitleChange(event) { this.setState({ title: event.target.value }); }
@@ -91,7 +135,6 @@ class EventCard extends React.Component {
             dateTime = time + "-" + newDate; 
         }
 
-
         let data = {
             title: title,
             message: message,
@@ -106,25 +149,50 @@ class EventCard extends React.Component {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
         })
-        .then(res => res.text())
-        .then(txt => console.log(txt))
-        .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(result => {
+            if (result.error)
+                this.setState({isLoaded: true, error: result.error});
+            else {
+                this.setState({isLoaded: true, event: result})
+                this.closeModalHandler();
+            }
+        }).catch(err => console.error(err));
 
-        this.closeModalHandler();
+        // fetch(`http://localhost:8000/api/events/${this.state.id}`, {
+        //     method: "put",
+        //     headers: {"Content-Type": "application/json"},
+        //     body: JSON.stringify(data)
+        // })
+        // .then(res => res.text())
+        // .then(txt => console.log(txt))
+        // .catch(err => console.error(err));
+
+        
     }
 
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
-        var event_description;
-        // eslint-disable-next-line
-        var long_event_description;
-        // var id = this.props.id;
-        if (this.props.event_description.length > event_description_on_card_length) {
-            event_description = this.props.event_description.substring(0, event_description_on_card_length) + "..."
-            // eslint-disable-next-line
-            long_event_description = true;
+   
+        _id = this.state.id;
+
+
+
+        this.title = [];
+        this.description = [];
+        
+        if (this.props.event_title.length > 13) {
+            this.title.push(this.props.event_title.substring(0, 13) + "...")
         } else {
-            event_description = this.props.event_description
+            this.title.push(this.props.event_title)
+
+        }
+
+        if (this.props.event_description.length > event_description_on_card_length) {
+            this.description.push(this.props.event_description.substring(0, event_description_on_card_length) + "...")
+            this.description.push(<Button variant='link' size='sm' onClick={this.handleShowEventCanvas.bind(this)} >Weiterlesen</Button>)
+        } else {
+            this.description.push(this.props.event_description)
         }
         return (
             <>
@@ -187,72 +255,29 @@ class EventCard extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
-
-
-
-                <div class=" m-1 ">
-                    <Card border="primary" bg='dark' text='light' style={{ width: '16rem' }}>
-                        <Card.Header >
-                            <Card.Title>{this.props.event_title}</Card.Title>
-                        </Card.Header>
-                        <Card.Body>
-                            <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
-                            <Card.Text>
-                                {event_description}
-                                <Button variant='link' size='sm'>Weiterlesen</Button>
-
-                            </Card.Text>
-                        </Card.Body>
-                        <Card.Footer>
-                            <Button variant="primary" size='sm' onClick={this.editEventHandler.bind(this)}>Bearbeiten</Button>
-                            &nbsp;&nbsp;
-                            <Button variant="danger" size='sm' onClick={this.deleteThisEvent.bind(this)}>Löschen</Button>
-                        </Card.Footer>
-                    </Card>
-                </div>
-            </>
+                    <div class=" m-1 ">
+                        <Card border="primary" bg='dark' text='light' style={{ width: '16rem', height: '18rem'}}>
+                            <Card.Header >
+                                <Card.Title>{this.title}</Card.Title>
+                            </Card.Header>
+                            <Card.Body>
+                                <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
+                                <Card.Text>
+                                {this.description}
+                            
+                                    </Card.Text>
+                                </Card.Body>
+                                <Card.Footer>
+                                    <Button variant="primary" size='sm' onClick={this.editEventHandler.bind(this)}>Bearbeiten</Button>
+                                    &nbsp;&nbsp;
+                                    <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
+                                </Card.Footer>
+                            </Card>
+                    </div>
+                    </>
 
         )
     }
 
-    // render() { //event_title="" event_duration="" event_date="" event_description=""
-
-    //     var event_description;
-    //     var long_event_description;
-    //     var id = this.props.id;
-    //     if (this.props.event_description.length > event_description_on_card_length) {
-    //         event_description = this.props.event_description.substring(0, event_description_on_card_length) + "..."
-    //         long_event_description = true;
-    //     } else {
-    //         event_description = this.props.event_description
-    //     }
-    //     return (
-    //         <ThemeProvider theme={darkTheme}>
-
-    //             <Card border="primary" bg='dark' text='light' style={{ width: '16rem' }}>
-    //                 <Card.Header>
-    //                     <Card.Title>{this.props.event_title}</Card.Title>
-    //                 </Card.Header>
-    //                 <Card.Body>
-    //                     <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
-    //                     <Card.Text>
-    //                         {event_description}
-    //                         <Button variant='link' size='sm'>Weiterlesen</Button>
-
-
-    //                     </Card.Text>
-
-    //                     <Button variant="primary" size='sm'>Bearbeiten</Button>
-    //                     &nbsp;&nbsp;
-    //                     <Button variant="danger" size='sm'>Löschen</Button>
-    //                 </Card.Body>
-    //             </Card>
-    //         </ThemeProvider>
-    //     )
-    // }
-
 }
-
-
-export default EventCard;
+export { _id as _id, _title as _title, _description as _description, _date as _date, _time as _time, _duration as _duration };

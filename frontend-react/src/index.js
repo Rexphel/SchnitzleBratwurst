@@ -4,6 +4,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import "bootstrap/dist/css/bootstrap.min.css";
+import './Contents/weather.css'
+
 
 ReactDOM.render(
   <React.StrictMode>

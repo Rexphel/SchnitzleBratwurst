@@ -1,12 +1,17 @@
 import React from 'react';
+// eslint-disable-next-line
+
+
+
 import { Button } from "react-bootstrap";
 import EventCard from './Contents/Card';
+import EventCanvas from './Contents/EventCanvas';
 import LoadingCard from './Contents/LoadingCard';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
-import { NewEventPopup, DeleteAllPopup } from "./Contents/NewPopup";
-
+import { NewEventPopup, DeleteEventPopup, DeleteAllEventsPopup } from "./Contents/NewPopup";
+import {WeatherGUI} from "./Contents/Weather"
 
 export const ModalContext = {
     newEvent: false,
@@ -16,32 +21,25 @@ export const ModalContext = {
     eventCanvas: false
 };
 
-// export function refreshMain(text) {
-//     console.info("refresh amkl");
-//     this.setState({ text: Math.random() });
-// }
-
-// const API = "localhost:8000/api/events"
-// const bgColor = darkTheme.body
-// const txtColor = darkTheme.text
-// var event_title = "Mega wichtiges Event";
-// var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiuiuherg o gg glwejgöosuhas.lsakngiuesröbl-aiskngöioeli-fjwsgoiäeLAFJKn weg8923o0wrq9ij43n29oö rihf384woerisjf knmwpeasdk,mxc we8 9ü   23o9öwiedkhjk";
-// var event_duration = "SS:MM";
-// var event_date = "TT.MM.JJJJ";
 var Theme = 'dark';
 
-class Content extends React.Component {
+export default class Content extends React.Component {
+
+
 
     constructor(props) {
         super(props);
         this.props = props;
-
         this.state = {
             isLoaded: false,
             error: null,
-            events: [],
-            text: "Initial Text"
-        }
+            events: []
+            
+        };
+        
+   
+        this.reRender = this.reRender.bind(this);
+    }
 
         // refreshMain = refreshMain.bind(this);
         // this.updateText1 = this.updateText1.bind(this);
@@ -75,29 +73,48 @@ class Content extends React.Component {
         // const [show_event_canvas, setShow_event_canvas] = useState(false);
         // const handleClose_event_canvas = () => setShow_event_canvas(false);
         // const handleShow_event_canvas = () => setShow_event_canvas(true);
-    }
-
-    makeApiCall() {
-        // console.log("Api Call");
-        fetch("http://localhost:8000/api/events")
+    
+    
+    reRender(value, shouldfetch = new Boolean('false') , fetch_type) { //value always "this.state", shouldfetch: Bool -> reFetch?, fetch_type: fetchType
+        if (shouldfetch === 'true') {
+            fetch("http://localhost:8000/api/events")
             .then(res => res.json())
             .then(result => {
                 if (result.error)
-                    this.setState({ isLoaded: true, error: result.error });
+                    this.setState({isLoaded: true, error: result.error});
                 else {
-                    this.setState({ isLoaded: true, events: result });
+                    this.setState({isLoaded: true, events: result});
+                    this.setState({value});
                 }
-            }).catch(err => console.error(err));
-    }
+            }).catch(err => console.error(err)); 
+        } else {
+        
+            this.setState({value});
+        }
+    }   
+
+    // makeApiCall() {
+    //     // console.log("Api Call");
+    //     fetch("http://localhost:8000/api/events")
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             if (result.error)
+    //                 this.setState({ isLoaded: true, error: result.error });
+    //             else {
+    //                 this.setState({ isLoaded: true, events: result });
+    //             }
+    //         }).catch(err => console.error(err));
+    // }
 
     componentDidMount() {
-        this.makeApiCall();
+            this.reRender(this.state, 'true');
+        //this.makeApiCall();
         // console.log("Mounted");
     }
 
     handleShowNewEvent() {
         ModalContext.newEvent = true;
-        this.setState({});
+        this.reRender(this.state);
     }
 
     toggleTheme(){
@@ -107,12 +124,13 @@ class Content extends React.Component {
         else{
             Theme = 'dark';
         } 
-        this.setState({});
+        this.reRender(this.state);
+        console.log(Theme)
     }
     
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
-        this.setState({});
+        this.reRender(this.state);
     }
 
     // updateText1 = (text) => {
@@ -135,7 +153,8 @@ class Content extends React.Component {
                 // console.log("No Error");
                 for (const event of this.state.events) {
                     const datetime = event.date.split('-');
-                    this.items.push(<EventCard id={event._id} event_title={event.title} event_description={event.message} event_duration={event.duration} event_date={datetime[1]} event_time={datetime[0]}/>);
+                    this.items.push(<EventCard reRender={this.reRender} id={event._id} event_title={event.title} event_description={event.message} event_date={datetime[1]} event_time={datetime[0]} event_duration={event.duration} />);
+
                 }
             }
         } else {
@@ -149,7 +168,7 @@ class Content extends React.Component {
 
         return (
             //Show x Event Cards
-
+            
             <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
                 <GlobalStyles />
                 <div className="mt-3">
@@ -180,20 +199,30 @@ class Content extends React.Component {
             </Button>           */}
 
 
-
                     <hr />
                     {/*!!!WORK HERE!!!*/}
                     {/*   class="m-auto d-flex justify-content-between"*/}
+
 
                     <div class="d-flex justify-content-center flex-wrap" >
                         {this.items}
                     </div>
 
+
+                    <NewEventPopup reRender={this.reRender}/>
+                    <DeleteEventPopup reRender={this.reRender}/>
+                    <DeleteAllEventsPopup reRender={this.reRender}/>
+                    <EventCanvas reRender={this.reRender}/>
+                    <hr />
+                    <WeatherGUI />
+                    {/*-----EDIT EVENT POPUP-----*/}
+                    {/* <Modal
                     <NewEventPopup refresh={() => {this.makeApiCall(); this.props.refresh()}} />
 
-                    <>
+                    
                         {/*-----EDIT EVENT POPUP-----*/}
                         {/* <Modal
+
                         show={show_edit_event}
                         onHide={handleClose_edit_event}
                         backdrop="static"
@@ -277,9 +306,9 @@ class Content extends React.Component {
 
                         {/*-----DELETE ALL EVENTS POPUP-----*/}
 
-                        <DeleteAllPopup />
 
                         {/* 
+
                     <Offcanvas show={show_event_canvas} onHide={handleClose_event_canvas} style={{ backgroundColor: bgColor }} >
                         <Offcanvas.Header closeButton closeVariant='white'>
                             <Offcanvas.Title><h3>{event_title}</h3></Offcanvas.Title>
@@ -290,12 +319,12 @@ class Content extends React.Component {
                             {event_description}
                         </Offcanvas.Body>
                     </Offcanvas> */}
-                    </>
-                </div>
+</div>
+                
+
             </ThemeProvider>
         );
     }
 
 }
 
-export default Content;

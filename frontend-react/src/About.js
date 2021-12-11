@@ -3,9 +3,8 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
-//import process from NodeJS
 
-const Theme = 'dark'
+const Theme = 'dark';
 export default class About extends React.Component {
     
     constructor(props) {
@@ -19,7 +18,7 @@ export default class About extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Pulling Versions...")
+        console.log("Pulling Software Versions...")
         fetch("http://localhost:8000/api/version")
         .then(res => res.json())
         .then(result => {
@@ -53,6 +52,7 @@ export default class About extends React.Component {
     // }
 
     return (
+        
         <ThemeProvider theme={Theme === 'dark' ? darkTheme : lightTheme}>
         <GlobalStyles /> 
         <div>
