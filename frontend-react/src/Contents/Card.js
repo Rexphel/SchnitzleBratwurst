@@ -1,10 +1,6 @@
 import React from 'react';
-import { Button, Card, Offcanvas } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
-import { ThemeProvider } from '../../node_modules/styled-components/';
-import { lightTheme, darkTheme } from '../Styling/Theme';
-import { GlobalStyles } from '../Styling/Global';
-
 class EventCard extends React.Component {
 
     constructor(props) {
@@ -23,11 +19,8 @@ class EventCard extends React.Component {
     render() { //event_title="" event_duration="" event_date="" event_description=""
 
         var event_description;
-        var long_event_description;
-        var id = this.props.id;
         if (this.props.event_description.length > event_description_on_card_length) {
             event_description = this.props.event_description.substring(0, event_description_on_card_length) + "..."
-            long_event_description = true;
         } else {
             event_description = this.props.event_description
         }

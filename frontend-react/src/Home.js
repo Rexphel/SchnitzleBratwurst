@@ -1,13 +1,9 @@
-import { useState } from "react";
 import React from 'react';
 // eslint-disable-next-line
 import { Button, Modal, Form, Offcanvas } from "react-bootstrap";
-import { BsExclamationTriangle } from "react-icons/bs";
-import { Row, Col, Container } from 'react-bootstrap';
 import EventCard from './Contents/Card';
 import LoadingCard from './Contents/LoadingCard';
 //import { popup_new_event, popup_delete_event } from './Contents/Popups'
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 //import EventCanvas from './Contents/Offcanvas';
 //import { DateTime } from 'react-datetime-bootstrap';
 import { ThemeProvider } from 'styled-components';
@@ -24,13 +20,6 @@ export const ModalContext = {
     eventCanvas: false
 };
 
-const API = "localhost:8000/api/events"
-const bgColor = darkTheme.body
-const txtColor = darkTheme.text
-var event_title = "Mega wichtiges Event";
-var event_description = "Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular.s Außerdem: BRABBELf kufbwakfbakfuhgbgkjbgnasginwekugsekgu be7hasklg jnbadpg8wepgoisjw nezwiuiuherg o gg glwejgöosuhas.lsakngiuesröbl-aiskngöioeli-fjwsgoiäeLAFJKn weg8923o0wrq9ij43n29oö rihf384woerisjf knmwpeasdk,mxc we8 9ü   23o9öwiedkhjk";
-var event_duration = "SS:MM";
-var event_date = "TT.MM.JJJJ";
 var Theme = 'dark';
 
 class Content extends React.Component {
@@ -77,8 +66,9 @@ class Content extends React.Component {
 
     componentDidMount() {
         console.log("Hello, sdfasdg yo");
-        fetch("http://localhost:8000/api/events")
-            .then(res => res.json())
+        fetch("http://localhost:8000/api/events", { 
+            mode: 'no-cors'
+        }).then(res => res.json())
             .then(result => {
                 if (result.error)
                     this.setState({isLoaded: true, error: result.error});
@@ -278,30 +268,6 @@ class Content extends React.Component {
             </ThemeProvider>
         );
     }
-
-}
-
-function fetchCardInfo() {
-
-    //-> Fetch Event Count
-    //-> Fetch all Event Information
-    //-> Show Cards with Event Info
-
-}
-
-function fetchCanvasInfo() {
-
-    //-> Fetch Event
-    //-> Show Canvas with Event Information
-
-}
-
-function EditEvent() {
-
-    //-> Fetch Event
-    //-> Show Edit Modal with current Event Information
-    //-> Let user Edit Modal
-    //-> Save updated Event
 
 }
 

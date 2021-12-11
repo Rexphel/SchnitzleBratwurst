@@ -1,12 +1,11 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 
 function Navigation() {
   return (
     <Navbar bg="dark" variant="dark" sticky="top" expand="lg">
       <Container>
         <Navbar.Brand href="/home">
-          <img src="/icon.png" width="30" height="30" className="d-inline-block align-top" />
+          <img src="/icon.png" width="30" height="30" alt="icon" className="d-inline-block align-top" />
           {" "}Simple Event Manager</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
