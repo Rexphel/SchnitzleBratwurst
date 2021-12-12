@@ -183,16 +183,17 @@ export class DeleteEventPopup extends React.Component {
     }
 
     deleteEvent() {
-        fetch(`http://localhost:8000/api/events/${CurrentID.id}`, {method: "DELETE"})
+        fetch(`http://localhost:8000/api/events/${CurrentID.deleteId}`, {method: "DELETE"})
         .then(res => res.json())
         .then(result => {
             if (result.error)
                 this.setState({isLoaded: true, error: result.error});
             else {
-                this.setState({isLoaded: true, event: result})
-                this.props.reRender(this.state,'true')
+                this.setState({isLoaded: true, event: result});
+                this.props.reRender(this.state,'true');
                 this.handleClose();
             }
+            this.props.reRender(this.state, 'true');
         }).catch(err => console.error(err));
 
     }
@@ -207,7 +208,7 @@ export class DeleteEventPopup extends React.Component {
                 keyboard={false}
             >
                 <Modal.Header style={{ backgroundColor: bgColor }}>
-                    <Modal.Title>Event löschen?</Modal.Title>
+                    <Modal.Title>Event löschen? {CurrentID.deleteId}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body style={{ backgroundColor: bgColor }}>
