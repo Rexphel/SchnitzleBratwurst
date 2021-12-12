@@ -44,39 +44,6 @@ export default class Content extends React.Component {
         this.reRender = this.reRender.bind(this);
     }
 
-    // refreshMain = refreshMain.bind(this);
-    // this.updateText1 = this.updateText1.bind(this);
-
-    // const new_event = useState(false);
-    // this.show_new_event = new_event[0];
-    // this.setShow_new_event = new_event[1];
-    // // const [show_new_event, setShow_new_event] = useState(false);
-    // this.handleClose_new_event = () => this.setShow_new_event(false);
-    // this.handleShow_new_event = () => this.setShow_new_event(true);
-    // this.handleClose_new_event = () => this.setState({show_new_event: false});
-    // this.handleShow_new_event = () => this.setState({show_new_event: true});
-
-    // const [show_edit_event, setShow_edit_event] = useState(false);
-    // const handleClose_edit_event = () => setShow_edit_event(false);
-    // const handleShow_edit_event = () => setShow_edit_event(true);
-
-    // const [show_delete_event, setShow_delete_event] = useState(false);
-    // const handleClose_delete_event = () => setShow_delete_event(false);
-    // const handleShow_delete_event = () => setShow_delete_event(true);
-
-    // const delete_all_events = useState(false);
-    // this.show_delete_all_events = delete_all_events[0];
-    // this.setShow_delete_all_events = delete_all_events[1];
-    // // const [show_delete_all_events, setShow_delete_all_events] = useState(false);
-    // this.handleClose_delete_all_events = () => this.setShow_delete_all_events(false);
-    // this.handleShow_delete_all_events = () => this.setShow_delete_all_events(true);
-    // this.handleClose_delete_all_events = () => this.setState({show_delete_all_events: false});
-    // this.handleShow_delete_all_events = () => this.setState({show_delete_all_events: true});
-
-    // const [show_event_canvas, setShow_event_canvas] = useState(false);
-    // const handleClose_event_canvas = () => setShow_event_canvas(false);
-    // const handleShow_event_canvas = () => setShow_event_canvas(true);
-
     // eslint-disable-next-line
     reRender(value, shouldfetch = new Boolean('false'), fetch_type) { //value always "this.state", shouldfetch: Bool -> reFetch?, fetch_type: fetchType
         if (shouldfetch === 'true') {
