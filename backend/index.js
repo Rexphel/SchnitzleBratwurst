@@ -3,14 +3,14 @@ const mongoManager = require("./mongodb-manager");
 const mongo = require("./mongodb-client");
 const { debug_req, debug } = require('./helper.js');
 const fs = require("fs");
-
+const cors = require('cors')
 const PORT = 8000;
 
 const app = express();
 const PREFIX = "/api";
 
 app.use(express.json());
-
+app.use(cors())
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -200,6 +200,14 @@ app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
   mongo.connect();
 });
+
+app.get('/products/:id', function (req, res, next) {
+    res.json({msg: 'This is CORS-enabled for all origins!'})
+  })
+  
+  app.listen(80, function () {
+    console.log('CORS-enabled web server listening on port 80')
+  })
 
 /* Template To Copy
     try {

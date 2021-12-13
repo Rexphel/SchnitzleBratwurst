@@ -3,6 +3,7 @@ import { Button, Card, Modal, Alert, Form } from "react-bootstrap";
 import { event_description_on_card_length } from '../App';
 import { ModalContext, CurrentID } from '../Home';
 import { darkTheme } from '../Styling/Theme';
+import { DeleteModal } from './DeleteModal';
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -24,13 +25,15 @@ export default class EventCard extends React.Component {
             message: this.props.event_description,
             date: this.props.event_date,
             time: this.props.event_time,
-            duration: this.props.event_duration
+            duration: this.props.event_duration,
+            showDelete: false
         };
 
         this.handleOpen = this.handleShowEventCanvas.bind(this);
         this.handleOpen2 = this.handleShowDeleteEvent.bind(this)
         this.editEventHandler = this.editEventHandler.bind(this);
         this.closeModalHandler = this.closeModalHandler.bind(this);
+        this.deleteThisEvent = this.deleteThisEvent.bind(this);
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleMessageeChange = this.handleMessageeChange.bind(this);
@@ -40,52 +43,38 @@ export default class EventCard extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.newDate = this.props.event_date; // 31.05.2002
-        // this.time = this.props.event_time; // 11:15
+        this.newDate = this.props.event_date;
         this.splitted = this.newDate.split(".");
         this.realDate = this.splitted[2] + "-" + this.splitted[1] + "-" + this.splitted[0];
     }
 
     handleShowDeleteEvent() {
-        ModalContext.deleteEvent = true
-        CurrentID.id = this.state.id;
-        this.props.reRender(this.state, 'true')
-
+        this.setState({ showDelete: true });
     }
 
+    deleteThisEvent() {
+        fetch(`http://localhost:8000/api/events/${this.props.id}`, { method: "DELETE" })
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    alert(result.error);
+                else {
+                    this.setState({ showDelete: false, id: this.props.id });
+
+                    this.props.reRender(this.state, 'true');
+                }
+            }).catch(err => console.error(err));
+    }
 
     handleShowEventCanvas() {
         //fetch(`http://localhost:8000/api/events/${_id}`)
         ModalContext.eventCanvas = true;
         CurrentID.id = this.state.id;
-        this.props.reRender(this.state, 'true')
+        this.props.reRender(this.state, 'true');
         // updateThis(Math.random() * 100);
         CurrentID.reFetch();
         // console.log(CurrentID);
     }
-
-    /*deleteThisEvent() {
-    fetch(`http://localhost:8000/api/events/${this.state.id}`, { method: "DELETE" })
-        .then(res => res.json())
-        .then(result => {
-            if (result.error)
-                this.setState({isLoaded: true, error: result.error});
-            else {
-                this.setState({isLoaded: true, event: result});
-            }
-        }).catch(err => console.error(err));
-
-    
-    */
-
-    // deleteThisEvent() {
-    //     fetch(`http://localhost:8000/api/events/${this.state.id}`, {method: "DELETE"})
-    //         .then(res => res.json())
-    //         .then(res => console.log(res))
-    //         .catch(err => console.error(err));
-    // }
-
-
 
     editEventHandler() {
         this.setState({ showEdit: true });
@@ -141,9 +130,7 @@ export default class EventCard extends React.Component {
             duration: duration
         };
 
-        // console.log("Date: " + data.date);
-
-        fetch(`http://localhost:8000/api/events/${this.state.id}`, {
+        fetch(`http://localhost:8000/api/events/${this.props.id}`, {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -157,23 +144,9 @@ export default class EventCard extends React.Component {
                     this.closeModalHandler();
                 }
             }).catch(err => console.error(err));
-
-        // fetch(`http://localhost:8000/api/events/${this.state.id}`, {
-        //     method: "put",
-        //     headers: {"Content-Type": "application/json"},
-        //     body: JSON.stringify(data)
-        // })
-        // .then(res => res.text())
-        // .then(txt => console.log(txt))
-        // .catch(err => console.error(err));
-
-
     }
 
-    render() { //event_title="" event_duration="" event_date="" event_description=""
-
-        // _id = this.state.id;
-
+    render() {
 
         this.title = [];
         this.description = [];
@@ -262,7 +235,6 @@ export default class EventCard extends React.Component {
                             <Card.Title><h5>Am: {this.props.event_date}</h5> </Card.Title>
                             <Card.Text>
                                 {this.description}
-
                             </Card.Text>
                         </Card.Body>
                         <Card.Footer>
@@ -271,8 +243,9 @@ export default class EventCard extends React.Component {
                             <Button variant="danger" size='sm' onClick={this.handleShowDeleteEvent.bind(this)}>Löschen</Button>
                         </Card.Footer>
                     </Card>
-                   
+
                 </div>
+                <DeleteModal show={this.state.showDelete} id={this.props.id} hide={() => this.setState({ showDelete: false })} delete={this.deleteThisEvent} reRender={this.props.reRender} />
             </>
 
         )

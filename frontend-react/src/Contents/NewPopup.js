@@ -1,10 +1,9 @@
 import React from 'react';
-import { ModalContext, CurrentID } from '../Home';
+import { ModalContext } from '../Home';
 import { Button, Modal, Form, } from "react-bootstrap";
 import { BsExclamationTriangle } from "react-icons/bs";
 import { darkTheme } from '../Styling/Theme';
 import { Alert } from 'react-bootstrap';
-// import { refreshMain } from '../Home';
 
 const bgColor = darkTheme.body
 const txtColor = darkTheme.text
@@ -73,15 +72,15 @@ export class NewEventPopup extends React.Component {
 
         fetch(`http://localhost:8000/api/events/`, {
             method: "post",
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         })
             .then(res => res.json())
             .then(result => {
                 if (result.error)
-                    this.setState({isLoaded: true, error: result.error});
+                    this.setState({ isLoaded: true, error: result.error });
                 else {
-                    this.setState({isLoaded: true, event: result});
+                    this.setState({ isLoaded: true, event: result });
                     this.props.reRender(this.state, 'true')
                     this.handleClose();
                 }
@@ -117,7 +116,7 @@ export class NewEventPopup extends React.Component {
 
                     <Modal.Body style={{ backgroundColor: bgColor }}>
 
-                        <Alert variant="danger" show={this.state.errorShow} onClose={() => this.setState({errorShow: false})}dismissible>Bitte alle werte eingeben!</Alert>
+                        <Alert variant="danger" show={this.state.errorShow} onClose={() => this.setState({ errorShow: false })} dismissible>Bitte alle werte eingeben!</Alert>
 
                         <Form.Group className="mb-3" controlId="inputEventTitle" style={{ backgroundColor: bgColor }}>
                             <Form.Label>Titel</Form.Label>
@@ -165,67 +164,68 @@ export class NewEventPopup extends React.Component {
         );
     }
 }
-export class DeleteEventPopup extends React.Component {
-    constructor(props) {
-        super(props);
-        this.props = props;
-        this.handleClose = this.handleClose.bind(this);
-        this.deleteEvent = this.deleteEvent.bind(this)
-    }
-    
-    handleClose() {
-        ModalContext.deleteEvent = false;
-        this.setState({});
-    }
+// export class DeleteEventPopup extends React.Component {
+//     constructor(props) {
+//         super(props);
+//         this.props = props;
+//         this.handleClose = this.handleClose.bind(this);
+//         this.deleteEvent = this.deleteEvent.bind(this)
+//     }
 
-    componentDidMount() {
-        this.setState({});
-    }
+//     handleClose() {
+//         ModalContext.deleteEvent = false;
+//         this.setState({});
+//     }
 
-    deleteEvent() {
-        fetch(`http://localhost:8000/api/events/${CurrentID.id}`, {method: "DELETE"})
-        .then(res => res.json())
-        .then(result => {
-            if (result.error)
-                this.setState({isLoaded: true, error: result.error});
-            else {
-                this.setState({isLoaded: true, event: result})
-                this.props.reRender(this.state,'true')
-                this.handleClose();
-            }
-        }).catch(err => console.error(err));
+//     componentDidMount() {
+//         this.setState({});
+//     }
 
-    }
+//     deleteEvent() {
+//         fetch(`http://localhost:8000/api/events/${CurrentID.deleteId}`, {method: "DELETE"})
+//         .then(res => res.json())
+//         .then(result => {
+//             if (result.error)
+//                 this.setState({isLoaded: true, error: result.error});
+//             else {
+//                 this.setState({isLoaded: true, event: result});
+//                 this.props.reRender(this.state,'true');
+//                 this.handleClose();
+//             }
+//             this.props.reRender(this.state, 'true');
+//         }).catch(err => console.error(err));
 
-    render() {
-        // console.log("render");
-        return (
-            <Modal
-                show={ModalContext.deleteEvent}
-                onHide={this.handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header style={{ backgroundColor: bgColor }}>
-                    <Modal.Title>Event löschen?</Modal.Title>
-                </Modal.Header>
+//     }
 
-                <Modal.Body style={{ backgroundColor: bgColor }}>
-                    <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher löschen? </h4>
-                </Modal.Body>
-                <Modal.Footer style={{ backgroundColor: bgColor }}>
-                    <Button variant="success" onClick={this.handleClose}>
-                        Doch nich!
-                    </Button>
-                    <Button variant="danger" onClick={this.deleteEvent.bind(this)}>
-                        Jaaa!
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
+//     render() {
+//         // console.log("render");
+//         return (
+//             <Modal
+//                 show={ModalContext.deleteEvent}
+//                 onHide={this.handleClose}
+//                 backdrop="static"
+//                 keyboard={false}
+//             >
+//                 <Modal.Header style={{ backgroundColor: bgColor }}>
+//                     <Modal.Title>Event löschen? {CurrentID.deleteId}</Modal.Title>
+//                 </Modal.Header>
 
-}
+//                 <Modal.Body style={{ backgroundColor: bgColor }}>
+//                     <h4> <BsExclamationTriangle />  &nbsp;  Ganz ganz wirklich ernsthaft sicher löschen? </h4>
+//                 </Modal.Body>
+//                 <Modal.Footer style={{ backgroundColor: bgColor }}>
+//                     <Button variant="success" onClick={this.handleClose}>
+//                         Doch nich!
+//                     </Button>
+//                     <Button variant="danger" onClick={this.deleteEvent.bind(this)}>
+//                         Jaaa!
+//                     </Button>
+//                 </Modal.Footer>
+//             </Modal>
+//         )
+//     }
+
+// }
 
 export class DeleteAllEventsPopup extends React.Component {
     constructor(props) {
@@ -242,17 +242,17 @@ export class DeleteAllEventsPopup extends React.Component {
     deleteAll() {
 
         fetch(`http://localhost:8000/api/allevents`, { method: "DELETE" })
-        .then(res => res.json())
-        .then(result => {
-            if (result.error)
-                this.setState({isLoaded: true, error: result.error});
-            else {
-                this.setState({isLoaded: true, event: result})
-                this.handleClose();
-            }
-        }).catch(err => console.error(err));
+            .then(res => res.json())
+            .then(result => {
+                if (result.error)
+                    this.setState({ isLoaded: true, error: result.error });
+                else {
+                    this.setState({ isLoaded: true, event: result })
+                    this.handleClose();
+                }
+            }).catch(err => console.error(err));
 
-        
+
     }
 
     componentDidMount() {
