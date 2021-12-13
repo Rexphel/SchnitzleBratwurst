@@ -7,7 +7,7 @@ import LoadingCard from './Contents/LoadingCard';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './Styling/Theme';
 import { GlobalStyles } from './Styling/Global';
-import { NewEventPopup, DeleteEventPopup, DeleteAllEventsPopup } from "./Contents/NewPopup";
+import { NewEventPopup, DeleteAllEventsPopup } from "./Contents/NewPopup";
 import { WeatherGUI } from "./Contents/Weather"
 
 export const ModalContext = {
@@ -27,8 +27,6 @@ export const CurrentID = {
 var Theme = 'dark';
 
 export default class Content extends React.Component {
-
-
 
     constructor(props) {
         super(props);
@@ -56,26 +54,12 @@ export default class Content extends React.Component {
                         this.setState({ isLoaded: true, events: result });
                         this.setState({ value, t: Math.random() });
                     }
-                    console.log(this.state);
                 }).catch(err => console.error(err));
         } else {
 
             this.setState({ value });
         }
     }
-
-    // makeApiCall() {
-    //     // console.log("Api Call");
-    //     fetch("http://localhost:8000/api/events")
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             if (result.error)
-    //                 this.setState({ isLoaded: true, error: result.error });
-    //             else {
-    //                 this.setState({ isLoaded: true, events: result });
-    //             }
-    //         }).catch(err => console.error(err));
-    // }
 
     componentDidMount() {
         this.reRender(this.state, 'true');
@@ -102,11 +86,6 @@ export default class Content extends React.Component {
     handleShowDeleteAllEvents() {
         ModalContext.deleteAllEvents = true;
         this.reRender(this.state);
-    }
-
-    clareItemArray() {
-        this.items = [];
-        this.reRender("asdfasdf", false);
     }
 
     render() {
@@ -165,11 +144,8 @@ export default class Content extends React.Component {
                     </div>
 
                     <NewEventPopup reRender={this.reRender} />
-                    <DeleteEventPopup reRender={this.reRender} />
                     <DeleteAllEventsPopup reRender={this.reRender} />
                     <EventCanvas reRender={this.reRender} />
-
-                    <Button onClick={this.clareItemArray.bind(this)}>Hello</Button>
                 </div>
 
 
